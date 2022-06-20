@@ -113,5 +113,5 @@ msg_menu3 = """Qual operação deseja realizar?
     [1] Sacar
     [2] Depositar
     [3] Consultar extrato
-    [4] Novo Limite
+    [4] Novo Crédito
     [0] Retornar"""

@@ -55,6 +55,7 @@ def operacao_em_conta():
     nome_arquivo = MeuInput('Digite o CPF: ').conteudo
     if CPF(nome_arquivo).validar:
         nome_arquivo = md5(bytes(CPF(nome_arquivo).cpf, 'utf-8')).hexdigest()
+        limpar_tela()
         Gerente(nome_arquivo).visualizar_conta()
         dados_principais = Gerente(nome_arquivo).extrair_dados()
         cliente = Cliente(dados_principais[:3])
@@ -66,10 +67,14 @@ def operacao_em_conta():
         # ------------------------------------ Saque -----------------------------------------------------------
         if menu == 1:
             valor = MeuInput('Digite o valor: ', float).conteudo
-            conta.sacar(valor)
-            dados_principais = cliente.dados + conta.dados
-            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=3, valor=f"R${valor:.2f}")
-            Gerente(nome_arquivo, dados_principais).escrever_cliente()
+            if conta.sacar(valor):
+                dados_principais = cliente.dados + conta.dados
+                Gerente(nome_arquivo, dados_principais).escrever_extrato(op=3, valor=f"R${valor:.2f}")
+                Gerente(nome_arquivo, dados_principais).escrever_cliente()
+                limpar_tela()
+            else:
+                limpar_tela()
+                print(msg4)
             Gerente(nome_arquivo).visualizar_conta()
         # ------------------------------------ Depósito --------------------------------------------------------
         elif menu == 2:
@@ -78,19 +83,22 @@ def operacao_em_conta():
             dados_principais = cliente.dados + conta.dados
             Gerente(nome_arquivo, dados_principais).escrever_extrato(op=2, valor=f"R${valor:.2f}")
             Gerente(nome_arquivo, dados_principais).escrever_cliente()
+            limpar_tela()
             Gerente(nome_arquivo).visualizar_conta()
         # ------------------------------------ Extrato ---------------------------------------------------------
         elif menu == 3:
+            limpar_tela()
             Gerente(nome_arquivo).escrever_extrato(op=1, valor=f"Extrato")
             Gerente(nome_arquivo).visualizar_conta()
             Gerente(nome_arquivo).visualizar_extrato()
         # ------------------------------------ Retornar --------------------------------------------------------
         elif menu == 4:
-            valor = MeuInput('Digite o novo limite: ', float).conteudo
+            valor = MeuInput('Digite o novo Crédito: ', float).conteudo
             conta.credito = valor
             dados_principais = cliente.dados + conta.dados
             Gerente(nome_arquivo, dados_principais).escrever_extrato(op=4, valor=f"R${valor:.2f}")
             Gerente(nome_arquivo, dados_principais).escrever_cliente()
+            limpar_tela()
             Gerente(nome_arquivo).visualizar_conta()
         # ------------------------------------ Retornar --------------------------------------------------------
         else:
@@ -120,6 +128,8 @@ msg2 = '''ErroCadastro ~02:
     Número de CPF inválido!'''
 msg3 = '''ErroCadastro ~03:
     Cliente não encontrado!'''
+msg4 = '''ErroLimite ~01:
+    O valor de saque excede seu limite disponível'''
 
 if __name__ == "__main__":
     limpar_tela()

@@ -19,11 +19,11 @@ class Registro:
         saldo = MeuInput('Saldo: ', float).conteudo
         menu = Menu().menu_creditos
         if menu == 1:
-            limite = MeuInput('Limite: ', float).conteudo
+            credito = MeuInput('Limite: ', float).conteudo
         else:
-            limite = 250
-        disponivel = saldo + limite
-        return [saldo, limite, disponivel]
+            credito = 250
+        disponivel = saldo + credito
+        return [saldo, credito, disponivel]
 
 
 class RegistroCliente(Registro):
@@ -102,7 +102,7 @@ class Conta:
             self.__saldo -= valor
             self.__disponivel = self.__saldo + self.__credito
         else:
-            print(f"O valor de R${valor:.2f}, excedeu o seu limite!")
+            return False
 
     def depositar(self, valor):
         self.__saldo += valor
