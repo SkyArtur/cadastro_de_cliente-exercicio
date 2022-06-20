@@ -3,7 +3,7 @@
 
 # Exercício de Git e GitHub + Python
 
-Exercício prático no aprendizado em Python. Pequeno software para simulação de manipulação de dados em arquivos de texto. Foram utilizados conhecimentos básicos da linguagem Python, tais como, manipulação de strings, tipos sequenciais, type casting, dunder methods, programação orientada a objetos.
+Exercício prático no aprendizado em Python. Pequeno software para simulação de manipulação de dados em arquivos de texto. Foram utilizados conhecimentos básicos da linguagem Python, tais como, manipulação de strings, tipos sequenciais, type casting, dunder methods e programação orientada à objetos.
 
 
 
