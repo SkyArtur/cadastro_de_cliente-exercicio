@@ -27,5 +27,6 @@ class Menu:
                         '[1] Sacar\n'
                         '[2] Depositar\n'
                         '[3] Consultar extrato\n'
-                        '[0] Retornar\n=> ', int, 0, 3).menu_input()
+                        '[4] Novo Limite'
+                        '[0] Retornar\n=> ', int, 0, 4).menu_input()
         return resp
