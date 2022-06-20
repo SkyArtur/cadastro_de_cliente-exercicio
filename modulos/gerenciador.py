@@ -4,7 +4,7 @@ import time
 
 class Relatorio:
     def __init__(self, data):
-        self.__operacao = ('Sacar', 'Depositar', 'Criar', 'Consultar')
+        self.__operacao = ('Criar', 'Consultar', 'Depositar', 'Sacar', 'Novo Crédito')
         self.__dados = data
         self.data = time.strftime('%d/%m/%Y - %H:%M', time.localtime())
 

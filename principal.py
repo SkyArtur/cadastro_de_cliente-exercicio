@@ -27,7 +27,7 @@ def cadastrar_cliente():
     else:
         conta = Conta(RegistroConta().conta)
         dados_principais = cliente.dados + conta.dados
-        Gerente(nome_arquivo, dados_principais).escrever_extrato(op=2, valor=f"s {conta.saldo}")
+        Gerente(nome_arquivo, dados_principais).escrever_extrato(op=0, valor=f"s R${conta.saldo:.2f}")
         print(Gerente(nome_arquivo, dados_principais).escrever_cliente())
 
 
@@ -42,7 +42,7 @@ def buscar_dados_do_cliente():
         nome_arquivo = md5(bytes(CPF(nome_arquivo).cpf, 'utf-8')).hexdigest()
         if Gerente(nome_arquivo).procurar_conta():
             limpar_tela()
-            Gerente(nome_arquivo).escrever_extrato(op=3, valor="None")
+            Gerente(nome_arquivo).escrever_extrato(op=1, valor="Consulta")
             Gerente(nome_arquivo).visualizar_conta()
         else:
             limpar_tela()
@@ -68,7 +68,7 @@ def operacao_em_conta():
             valor = MeuInput('Digite o valor: ', float).conteudo
             conta.sacar(valor)
             dados_principais = cliente.dados + conta.dados
-            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=0, valor=f"R${valor:.2f}")
+            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=3, valor=f"R${valor:.2f}")
             Gerente(nome_arquivo, dados_principais).escrever_cliente()
             Gerente(nome_arquivo).visualizar_conta()
         # ------------------------------------ Depósito --------------------------------------------------------
@@ -76,11 +76,12 @@ def operacao_em_conta():
             valor = MeuInput('Digite o valor: ', float).conteudo
             conta.depositar(valor)
             dados_principais = cliente.dados + conta.dados
-            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=1, valor=f"R${valor:.2f}")
+            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=2, valor=f"R${valor:.2f}")
             Gerente(nome_arquivo, dados_principais).escrever_cliente()
             Gerente(nome_arquivo).visualizar_conta()
         # ------------------------------------ Extrato ---------------------------------------------------------
         elif menu == 3:
+            Gerente(nome_arquivo).escrever_extrato(op=1, valor=f"Extrato")
             Gerente(nome_arquivo).visualizar_conta()
             Gerente(nome_arquivo).visualizar_extrato()
         # ------------------------------------ Retornar --------------------------------------------------------
@@ -88,7 +89,7 @@ def operacao_em_conta():
             valor = MeuInput('Digite o novo limite: ', float).conteudo
             conta.credito = valor
             dados_principais = cliente.dados + conta.dados
-            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=1, valor=f"R${valor:.2f}")
+            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=4, valor=f"R${valor:.2f}")
             Gerente(nome_arquivo, dados_principais).escrever_cliente()
             Gerente(nome_arquivo).visualizar_conta()
         # ------------------------------------ Retornar --------------------------------------------------------
