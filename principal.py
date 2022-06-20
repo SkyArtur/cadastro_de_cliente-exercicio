@@ -1,35 +1,10 @@
-from modulos.validador import CPF
-from modulos.registrador import *
+from modulos.registrador import Conta, Cliente, CPF, RegistroConta, RegistroCliente
+from modulos.entrada import Menu, MeuInput
 from modulos.gerenciador import Gerente
-from modulos.atendente import *
-from modulos.menus import Menu
 from hashlib import md5
-from sys import exit
 from time import sleep
+from sys import exit
 import os
-
-
-abertura = '''Exercício prático no aprendizado em Python.
-Artur dos Santos Shon - EAD - UNINTER - 2021'''
-forma1 = '''------------------------------------------
-     Sistema de Cadastro de Clientes
-------------------------------------------'''
-forma2 = '''------------------------------------------
-            Cadastro do Cliente
-------------------------------------------'''
-forma3 = '''------------------------------------------
-         Buscar Dados do Cliente
-------------------------------------------'''
-forma4 = '''------------------------------------------
-           Operações em Conta
-------------------------------------------'''
-
-msg1 = '''ErroCadastro ~01:
-    Cliente já cadastrado!'''
-msg2 = '''ErroCadastro ~02:
-    Número de CPF inválido!'''
-msg3 = '''ErroCadastro ~03:
-    Cliente não encontrado!'''
 
 
 def limpar_tela():
@@ -111,7 +86,7 @@ def operacao_em_conta():
         # ------------------------------------ Retornar --------------------------------------------------------
         elif menu == 4:
             valor = MeuInput('Digite o novo limite: ', float).conteudo
-            conta.limite(valor)
+            conta.credito = valor
             dados_principais = cliente.dados + conta.dados
             Gerente(nome_arquivo, dados_principais).escrever_extrato(op=1, valor=f"R${valor:.2f}")
             Gerente(nome_arquivo, dados_principais).escrever_cliente()
@@ -121,6 +96,29 @@ def operacao_em_conta():
             limpar_tela()
             break
 
+
+abertura = '''Exercício prático no aprendizado em Python.
+Copyright (c) 2022 - Ponta Grossa/PR. 
+Projeto Cadastro de Cliente.
+Artur dos Santos Shon - EAD - UNINTER - 2021.'''
+forma1 = '''------------------------------------------
+     Sistema de Cadastro de Clientes
+------------------------------------------'''
+forma2 = '''------------------------------------------
+            Cadastro do Cliente
+------------------------------------------'''
+forma3 = '''------------------------------------------
+         Buscar Dados do Cliente
+------------------------------------------'''
+forma4 = '''------------------------------------------
+           Operações em Conta
+------------------------------------------'''
+msg1 = '''ErroCadastro ~01:
+    Cliente já cadastrado!'''
+msg2 = '''ErroCadastro ~02:
+    Número de CPF inválido!'''
+msg3 = '''ErroCadastro ~03:
+    Cliente não encontrado!'''
 
 if __name__ == "__main__":
     limpar_tela()

@@ -1,0 +1,7 @@
+  operação            data                 Valor
+   Criar     |    20/06/2022 - 16:46    |   s 250.0   
+ Consultar   |    20/06/2022 - 16:46    |     None    
+ Consultar   |    20/06/2022 - 16:49    |     None    
+ Depositar   |    20/06/2022 - 16:51    |   R$500.00  
+ Depositar   |    20/06/2022 - 16:54    |  R$1000.00  
+ Depositar   |    20/06/2022 - 16:54    |   R$100.00  
