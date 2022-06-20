@@ -3,19 +3,7 @@
 
 # Exercício de Git e GitHub + Python
 
-Exercício prático no aprendizado em Python
-
-## Conceitos Básicoa Abordados:
-- métodos de manipulação de strings
-- list comprehension
-- laços de iteração
-- dicionários
-- type casting
-- docstrings
-- imports
-- manipulaçao de arquivo de texto
-- programação procedural 
-- e uma tentativa de orientação a objetos😁
+Exercício prático no aprendizado em Python. Pequeno software para simulação de manipulação de dados em arquivos de texto. Foram utilizados conhecimentos básicos da linguagem Python, tais como, manipulação de strings, tipos sequenciais, type casting, dunder methods, programação orientada a objetos.
 
 
 
