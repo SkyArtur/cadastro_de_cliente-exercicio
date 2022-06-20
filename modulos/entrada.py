@@ -1,5 +1,5 @@
 class MeuInput:
-    def __init__(self, input_usuario="~| ", tipo_input=None, minn=None, maxx=None):
+    def __init__(self, input_usuario="=> ", tipo_input=None, minn=None, maxx=None):
         self.__input_do_usuario = self.__meu_input(input_usuario, tipo_input)
         self.__min = minn
         self.__max = maxx
@@ -92,15 +92,19 @@ class Menu:
 
 
 msg1 = f'''ErroEntrada ~01:
-    São aceitos apenas números inteiros.'''
+    São aceitos apenas números inteiros.
+'''
 msg2 = f'''ErroEntrada ~02:
     Não são aceitos letras ou caractéres especiais.
     Use o ponto(.) ao invés da vírgula(,) para separar
-    casas decimais.'''
+    casas decimais.
+'''
 msg3 = f'''ErroEntrada ~03:
-    Parece que você digitou algo errado!'''
+    Parece que você digitou algo errado!
+'''
 msg4 = f'''InputMenuError ~01:
-    Parece que você digitou uma opção inválida!!'''
+    Parece que você digitou uma opção inválida!!
+'''
 msg_menu1 = """Menu Inicial:
     [1] Cadastrar Novo Cliente
     [2] Buscar Dados do Cliente

@@ -27,7 +27,7 @@ def cadastrar_cliente():
     else:
         conta = Conta(RegistroConta().conta)
         dados_principais = cliente.dados + conta.dados
-        Gerente(nome_arquivo, dados_principais).escrever_extrato(op=0, valor=f"s R${conta.saldo:.2f}")
+        Gerente(nome_arquivo, dados_principais).escrever_extrato(op=0, valor=f"R${conta.saldo:.2f}")
         print(Gerente(nome_arquivo, dados_principais).escrever_cliente())
 
 
@@ -50,6 +50,7 @@ def buscar_dados_do_cliente():
 
 
 def operacao_em_conta():
+    cliente, conta = 0, 0
     limpar_tela()
     print(forma4)
     nome_arquivo = MeuInput('Digite o CPF: ').conteudo
@@ -61,6 +62,7 @@ def operacao_em_conta():
         cliente = Cliente(dados_principais[:3])
         conta = Conta(dados_principais[3:])
     else:
+        limpar_tela()
         print(msg2)
     while True:
         menu = Menu().menu_operacoes
@@ -123,13 +125,17 @@ forma4 = '''------------------------------------------
            Operações em Conta
 ------------------------------------------'''
 msg1 = '''ErroCadastro ~01:
-    Cliente já cadastrado!'''
+    Cliente já cadastrado!
+'''
 msg2 = '''ErroCadastro ~02:
-    Número de CPF inválido!'''
+    Número de CPF inválido!
+'''
 msg3 = '''ErroCadastro ~03:
-    Cliente não encontrado!'''
+    Cliente não encontrado!
+'''
 msg4 = '''ErroLimite ~01:
-    O valor de saque excede seu limite disponível'''
+    O valor de saque excede seu limite disponível
+'''
 
 if __name__ == "__main__":
     limpar_tela()

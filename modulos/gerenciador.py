@@ -117,8 +117,11 @@ class Gerente(Relatorio):
 
 
 msg1 = """MensagemGerente ~01:
-    Arquivo do cliente criado com sucesso."""
+    Arquivo do cliente criado com sucesso.
+"""
 msg2 = """MensagemGerente ~02:
-    Arquivo do cliente atualizado com sucesso."""
+    Arquivo do cliente atualizado com sucesso.
+"""
 msg3 = f"""MensagemGerente ~03:
-    Arquivo não encontrado."""
+    Arquivo não encontrado.
+"""

@@ -21,7 +21,7 @@ class Registro:
         if menu == 1:
             credito = MeuInput('Limite: ', float).conteudo
         else:
-            credito = 250
+            credito = 0
         disponivel = saldo + credito
         return [saldo, credito, disponivel]
 
@@ -101,6 +101,7 @@ class Conta:
         if self.validar_saque(valor):
             self.__saldo -= valor
             self.__disponivel = self.__saldo + self.__credito
+            return True
         else:
             return False
 
@@ -157,4 +158,5 @@ class Documento(CPF):
 
 
 msg_doc = """ErroDocumento ~01:
-    Número do documento não é válido!"""
+    Número do documento não é válido!
+"""
