@@ -17,25 +17,34 @@ class Relatorio:
         return relatorio
 
     def rel_extrato(self, op, valor):
-        relatorio = f"{self.__operacao[op]:>12} | {self.data} | {valor}"
+        relatorio = f"{self.__operacao[op]:^12} | {self.data:^24} | {valor:^12}"
         return relatorio
 
 
 class Gerente(Relatorio):
     def __init__(self, user_dir, data=None):
         super().__init__(data)
-        self.diretorio = f'./armazenamento/{user_dir}'
-        self.arquivo_cliente = f'./armazenamento/{user_dir}/cliente.txt'
-        self.arquivo_extrato = f'./armazenamento/{user_dir}/extrato.txt'
+        self.__diretorio = f'./armazenamento/{user_dir}'
+        self.__arquivo_conta = f'./armazenamento/{user_dir}/conta.txt'
+        self.__arquivo_extrato = f'./armazenamento/{user_dir}/extrato.txt'
         try:
             mkdir('./armazenamento/')
         except FileExistsError:
             pass
 
-    def procurar(self):
+    def procurar_conta(self):
         try:
-            arquivo = open(self.arquivo_cliente, 'rt')
-            arquivo.close()
+            arquivo_conta = open(self.__arquivo_conta, 'rt')
+            arquivo_conta.close()
+        except FileNotFoundError:
+            return False
+        else:
+            return True
+
+    def procurar_extrato(self):
+        try:
+            arquivo_extrato = open(self.__arquivo_extrato, 'rt')
+            arquivo_extrato.close()
         except FileNotFoundError:
             return False
         else:
@@ -43,50 +52,57 @@ class Gerente(Relatorio):
 
     def visualizar_conta(self):
         try:
-            arquivo = open(self.arquivo_cliente, 'rt')
-            print(arquivo.read())
-            arquivo.close()
+            arquivo_conta = open(self.__arquivo_conta, 'rt')
+            print(arquivo_conta.read())
+            arquivo_conta.close()
         except FileNotFoundError:
             return msg3
 
     def visualizar_extrato(self):
         try:
-            arquivo = open(self.arquivo_extrato, 'rt')
-            print(arquivo.read())
-            arquivo.close()
+            arquivo_extrato = open(self.__arquivo_extrato, 'rt')
+            print(arquivo_extrato.read())
+            arquivo_extrato.close()
         except FileNotFoundError:
             return msg3
 
     def escrever_extrato(self, op, valor):
-        try:
-            mkdir(self.diretorio)
-            arquivo = open(self.arquivo_extrato, 'wt+')
-            arquivo.write(f"{super().rel_extrato(op, valor)}\n")
-            arquivo.close()
-            return msg1
-        except FileExistsError:
-            arquivo = open(self.arquivo_extrato, 'at')
-            arquivo.write(f'{super().rel_extrato(op, valor)}\n')
-            arquivo.close()
+        if self.procurar_extrato():
+            arquivo_extrato = open(self.__arquivo_extrato, 'at')
+            arquivo_extrato.write(f'{super().rel_extrato(op, valor)}\n')
+            arquivo_extrato.close()
             return msg2
+        else:
+            try:
+                mkdir(self.__diretorio)
+            except FileExistsError:
+                pass
+            arquivo_extrato = open(self.__arquivo_extrato, 'wt+')
+            arquivo_extrato.write(f"{'operação':^12}{'data':^24}{'Valor':>12}\n"
+                                  f"{super().rel_extrato(op, valor)}\n")
+            arquivo_extrato.close()
+        return msg1
 
     def escrever_cliente(self):
-        try:
-            mkdir(self.diretorio)
-            arquivo = open(self.arquivo_cliente, 'wt+')
-            arquivo.write(f'{super().rel_conta}')
-            arquivo.close()
-            return msg1
-        except FileExistsError:
-            arquivo = open(self.arquivo_cliente, 'wt+')
-            arquivo.write(f'{super().rel_conta}')
-            arquivo.close()
+        if self.procurar_conta():
+            arquivo_cliente = open(self.__arquivo_conta, 'wt+')
+            arquivo_cliente.write(f'{super().rel_conta}')
+            arquivo_cliente.close()
             return msg2
+        else:
+            try:
+                mkdir(self.__diretorio)
+            except FileExistsError:
+                pass
+            arquivo_cliente = open(self.__arquivo_conta, 'wt+')
+            arquivo_cliente.write(f'{super().rel_conta}')
+            arquivo_cliente.close()
+            return msg1
 
     def extrair_dados(self):
         dados = list()
         try:
-            arquivo = open(self.arquivo_cliente, 'rt')
+            arquivo = open(self.__arquivo_conta, 'rt')
             content = [user_data.strip() for user_data in arquivo.readlines()]
             dados.append(content[0][content[0].find('Nome:') + 6:content[0].find('|')].strip())
             dados.append(content[0][content[0].find('CPF:') + 5:].strip())
