@@ -3,6 +3,10 @@
 
 # Exercício de Git e GitHub + Python
 
+![GitHub repo size](https://img.shields.io/github/repo-size/SkyArtur/cadastro_de_cliente-exercicio)
+![GitHub forks](https://img.shields.io/github/forks/SkyArtur/cadastro_de_cliente-exercicio?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/SkyArtur/cadastro_de_cliente-exercicio?style=social)
+
 Exercício prático no aprendizado em Python. Pequeno software para simulação de manipulação de dados em arquivos de texto. Foram utilizados conhecimentos básicos da linguagem Python, tais como, manipulação de strings, tipos sequenciais, type casting, dunder methods e programação orientada à objetos.
 
 Número de CPFs fictícios, mas que atendem a regra de validação para CPFs, para teste. O programa não aceita um número que não atenda o algoritmo para validação de CPF.
