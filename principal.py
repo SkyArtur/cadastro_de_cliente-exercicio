@@ -8,17 +8,39 @@ from sys import exit
 import os
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Limpar Tela
+# ----------------------------------------------------------------------------------------------------------------------
 def limpar_tela():
+    """Função que realiza a limpeza do console em tempo de execução.
+
+    :return: command(clear | cls)
+    """
     os.system(command='cls') if os.name in ['nt', 'dos'] else os.system(command='clear')
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Encerrar Programa
+# ----------------------------------------------------------------------------------------------------------------------
 def encerrar():
+    """Função para encerramento do programa.
+
+    :return: function(exit())
+    """
     print('Encerrando.......')
     sleep(1.5)
     return exit()
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Cadastrar Cliente
+# ----------------------------------------------------------------------------------------------------------------------
 def cadastrar_cliente():
+    """Função que processa a opção 'Cadastrar Cliente'
+    do menu inicial.
+
+    :return: str(mensagem)
+    """
     limpar_tela()
     print(forma2)
     cliente = Cliente(Registro().registrar_cliente)
@@ -32,7 +54,15 @@ def cadastrar_cliente():
         print(Gerenciador(nome_arquivo, dados_principais).escrever_conta())
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Buscar Dados do Cliente
+# ----------------------------------------------------------------------------------------------------------------------
 def buscar_dados_do_cliente():
+    """Função que processa a opção 'Buscar Dados do Cliente'
+    do menu inicial
+
+    :return: str(mensagem)
+    """
     limpar_tela()
     print(forma3)
     nome_arquivo = InputPadrao('Digite o CPF: ').conteudo
@@ -50,7 +80,15 @@ def buscar_dados_do_cliente():
             print(msg_principal_03)
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Operação em Conta
+# ----------------------------------------------------------------------------------------------------------------------
 def operacao_em_conta():
+    """Função que processa a opção 'Operação em Conta"
+    do menu inicial.
+
+    :return: str(mensagem)
+    """
     cliente, conta = 0, 0
     ref_cliente = ['nome', 'cpf', 'endereco', 'bairro']
     ref_conta = ['saldo', 'credito']
@@ -69,7 +107,7 @@ def operacao_em_conta():
         print(msg_principal_02)
     while True:
         op = Menu().menu_operacoes
-        # ------------------------------------ Saque -----------------------------------------------------------
+        # ------------------------------------ Saque -------------------------------------------------------------------
         if op == 1:
             valor = InputPadrao('Digite o valor: ', float).conteudo
             if conta.sacar(valor):
@@ -81,7 +119,7 @@ def operacao_em_conta():
                 limpar_tela()
                 print(msg_principal_04)
             Gerenciador(nome_arquivo).visualizar()
-        # ------------------------------------ Depósito --------------------------------------------------------
+        # ------------------------------------ Depósito ----------------------------------------------------------------
         elif op == 2:
             valor = InputPadrao('Digite o valor: ', float).conteudo
             conta.depositar(valor)
@@ -90,13 +128,13 @@ def operacao_em_conta():
             Gerenciador(nome_arquivo, dados_principais).escrever_conta()
             limpar_tela()
             Gerenciador(nome_arquivo).visualizar()
-        # ------------------------------------ Extrato ---------------------------------------------------------
+        # ------------------------------------ Extrato -----------------------------------------------------------------
         elif op == 3:
             limpar_tela()
             Gerenciador(nome_arquivo).escrever_extrato("Extrato", "------")
             Gerenciador(nome_arquivo).visualizar()
             Gerenciador(nome_arquivo, seletor='ext').visualizar()
-        # ------------------------------------ Novo Crédito ----------------------------------------------------
+        # ------------------------------------ Novo Crédito ------------------------------------------------------------
         elif op == 4:
             valor = InputPadrao('Digite o novo Crédito: ', float).conteudo
             conta.credito = valor
@@ -105,12 +143,15 @@ def operacao_em_conta():
             Gerenciador(nome_arquivo, dados_principais).escrever_conta()
             limpar_tela()
             Gerenciador(nome_arquivo).visualizar()
-        # ------------------------------------ Retornar --------------------------------------------------------
+        # ------------------------------------ Retornar ----------------------------------------------------------------
         else:
             limpar_tela()
             break
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Execução do Programa
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     limpar_tela()
     print(abertura)

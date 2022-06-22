@@ -3,6 +3,9 @@ from modulos.input_padrao import InputPadrao, Menu
 from modulos.mensagens import *
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Classe CPF
+# ----------------------------------------------------------------------------------------------------------------------
 class CPF:
     def __init__(self, documento):
         """Classe para validação do numero de CPF.
@@ -55,6 +58,9 @@ class CPF:
             return False
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Classe Documento
+# ----------------------------------------------------------------------------------------------------------------------
 class Documento(CPF):
     def __init__(self, documento: str):
         """Classe para verificação final do documento.
@@ -86,6 +92,9 @@ class Documento(CPF):
             print(msg_registrador_01)
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Classe Endereco
+# ----------------------------------------------------------------------------------------------------------------------
 class Endereco:
     def __init__(self, entrada='=> '):
         """Obtém o endereço através do CEP.
@@ -133,6 +142,9 @@ class Endereco:
         return {'endereco': self.__end_linha_1, 'bairro': self.__end_linha_2}
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Classe Cliente
+# ----------------------------------------------------------------------------------------------------------------------
 class Cliente:
     def __init__(self, dados: dict):
         """Instância o objeto Cliente.
@@ -176,6 +188,9 @@ class Cliente:
         return self.__cpf
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Classe Conta
+# ----------------------------------------------------------------------------------------------------------------------
 class Conta:
     def __init__(self, dados: dict):
         """Instância o objeto Conta
@@ -271,6 +286,9 @@ class Conta:
         return self.__disponivel
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                       Classe Registro
+# ----------------------------------------------------------------------------------------------------------------------
 class Registro:
     """Classe que realiza o registro da conta.
 
@@ -278,6 +296,7 @@ class Registro:
         - registrar_cliente
         - registrar_conta
     """
+
     @property
     def registrar_cliente(self):
         """Processa o registro do cliente.
