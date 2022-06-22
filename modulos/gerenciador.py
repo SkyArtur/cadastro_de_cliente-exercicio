@@ -17,7 +17,7 @@ class Relatorio:
 
         Métodos:
 
-        relatorio_conta()
+        relatorio_conta(),
         relatorio_extrato()
 
         :param dados: dict - dados para a impressão.
@@ -51,6 +51,24 @@ class Relatorio:
 # ----------------------------------------------------------------------------------------------------------------------
 class Gerenciador(Relatorio):
     def __init__(self, diretorio_cliente: str, dados=None, seletor=None):
+        """Manipula a criação  e edição dos arquivos de textos do programa.
+
+        Privado:
+
+        __definir_nome_arquivo()
+
+        Métodos:
+
+        procurar(),
+        visualizar(),
+        escrever_extrato(),
+        escrever_conta(),
+        extrair_dados(),
+
+        :param diretorio_cliente: str
+        :param dados: dict
+        :param seletor: None | str('ext')
+        """
         super().__init__(dados)
         self.__diretorio = f'./armazenamento/{diretorio_cliente}'
         self.__arquivo_conta = f'./armazenamento/{diretorio_cliente}/conta.txt'
@@ -62,12 +80,22 @@ class Gerenciador(Relatorio):
             pass
 
     def __definir_nome_arquivo(self, seletor):
+        """Método para definição do arquivo a ser visualizado ou procurado.
+
+        :param seletor: None | str('ext').
+        :return: str - nome do arquivo.
+        """
         if seletor == 'ext':
             return self.__arquivo_extrato
         else:
             return self.__arquivo_conta
 
     def procurar(self, seletor=None):
+        """Procura pelo arquivo selecionado pelo método __definir_nome_arquivo().
+
+        :param seletor: None | str('ext').
+        :return: bool -> True | False
+        """
         try:
             arquivo_conta = open(self.__definir_nome_arquivo(seletor), 'rt')
             arquivo_conta.close()
@@ -77,6 +105,10 @@ class Gerenciador(Relatorio):
             return True
 
     def visualizar(self):
+        """Exibe no console o conteúdo do arquivo solicitado.
+
+        :return: str -> conteúdo do arquivo.
+        """
         try:
             arquivo_conta = open(self.__arquivo, 'rt')
             print(arquivo_conta.read())
@@ -85,6 +117,12 @@ class Gerenciador(Relatorio):
             return msg_gerenciador_03
 
     def escrever_extrato(self, op, valor):
+        """Método responsável pela edição do arquivo de extrato.
+
+        :param op: str -> tipo de operação realizada em conta.
+        :param valor: str -> valor da operação
+        :return: str
+        """
         if self.procurar('ext'):
             arquivo_extrato = open(self.__arquivo_extrato, 'at')
             arquivo_extrato.write(f'{super().relatorio_extrato(op, valor)}\n')
@@ -103,6 +141,10 @@ class Gerenciador(Relatorio):
         return msg_gerenciador_01
 
     def escrever_conta(self):
+        """Método responsável pela edição do arquivo de dados da conta.
+
+        :return: str
+        """
         if self.procurar():
             arquivo_cliente = open(self.__arquivo, 'wt+')
             arquivo_cliente.write(f'{super().relatorio_conta()}')
@@ -119,6 +161,10 @@ class Gerenciador(Relatorio):
             return msg_gerenciador_01
 
     def extrair_dados(self):
+        """Método para extração dos dados da conta em arquivo de texto.
+
+        :return: dict -> dados
+        """
         dados = dict()
         padrao_cpf = '[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}'
         padrao_valor = '[0-9]{1,24}.[0-9]{2}'

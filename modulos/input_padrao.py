@@ -18,8 +18,8 @@ class InputPadrao:
 
         Operadores:
 
-        __repr__, __str__, __len__, __iter__
-        __eq__, __le__, __lt__, __ge__, __gt_
+        __repr__(), __str__(), __len__(), __iter__(),
+        __eq__(), __le__(), __lt__(), __ge__(), __gt__().
 
         Métodos:
 
@@ -32,7 +32,7 @@ class InputPadrao:
 
         Properties:
 
-        conteudo
+        @conteudo
 
         :param input_usuario: Any
         :param tipo_input: int: int | float: float | str: None
@@ -145,9 +145,9 @@ class Menu:
 
     Propriedades:
 
-    menu_inicial
-    menu_creditos
-    menu_operacoes
+    @menu_inicial,
+    @menu_creditos,
+    @menu_operacoes.
     """
 
     @property

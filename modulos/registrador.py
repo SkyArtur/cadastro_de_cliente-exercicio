@@ -5,6 +5,19 @@ from modulos.mensagens import *
 
 class CPF:
     def __init__(self, documento):
+        """Classe para validação do numero de CPF.
+
+        Operadores:
+
+        __str__().
+
+        Propriedades:
+
+        @cpf,
+        @validar.
+
+        :param documento: str -> numero do documento.
+        """
         self.__cpf = documento
         self.__cpf_form = f"{self.__cpf[:3]}.{self.__cpf[3:6]}." \
                           f"{self.__cpf[6:9]}-{self.__cpf[9:]}"
@@ -14,6 +27,10 @@ class CPF:
 
     @property
     def cpf(self):
+        """Getter da Classe.
+
+        :return: str -> CPF formatado.
+        """
         return self.__cpf_form
 
     @property
@@ -34,13 +51,25 @@ class CPF:
 
 
 class Documento(CPF):
-    def __init__(self, documento):
+    def __init__(self, documento: str):
+        """Classe para verificação final do documento.
+
+        Propriedade:
+
+        @checar.
+
+        :param documento: str -> número do documento
+        """
         super().__init__(documento)
         self.__doc = documento
 
     @property
     def checar(self):
-        if len(self.__doc) < 12:
+        """Verifica o tamanho da string passada, e se ela contém apenas números.
+
+        :return: bool -> True | False
+        """
+        if len(self.__doc) == 11 and self.__doc.isalnum():
             if CPF(self.__doc).validar:
                 return True
             else:
@@ -52,12 +81,30 @@ class Documento(CPF):
 
 class Endereco:
     def __init__(self, entrada='=> '):
+        """Obtém o endereço através do CEP.
+
+        Privado:
+
+        __validar_cep
+
+        Propriedade:
+
+        @endereco
+
+        :param entrada: str -> input usuário.
+        """
         self.__end = self.__validar_cep(entrada)
         self.__numero = InputPadrao('Número da residência:\n=> ', int).conteudo
         self.__end_linha_1 = f"{self.__end['logradouro']} nº{self.__numero} | CEP:{self.__end['cep']}"
         self.__end_linha_2 = f"{self.__end['bairro']} - {self.__end['cidade']}/{self.__end['uf']}"
 
     def __validar_cep(self, entrada):
+        """Método privado para validação do número de CEP. Utiliza a API
+        pycep_correios para realizar a consulta.
+
+        :param entrada: str -> CEP
+        :return: dict -> dados endereço
+        """
         while True:
             self.__cep = InputPadrao(entrada).cep_input()
             try:
@@ -71,11 +118,19 @@ class Endereco:
 
     @property
     def endereco(self):
+        """Getter da classe.
+
+        :return: dict -> dados endereço.
+        """
         return {'endereco': self.__end_linha_1, 'bairro': self.__end_linha_2}
 
 
 class Cliente:
     def __init__(self, dados):
+        """
+
+        :param dados:
+        """
         self.__nome = dados['nome']
         self.__cpf = dados['cpf']
         self.__endereco = dados['endereco']
