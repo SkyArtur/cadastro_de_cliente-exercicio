@@ -1,6 +1,6 @@
 <a align="center"><img width="100%" heigth="100" alt="Imagem do funcionamento do programa em uma janela com o código ao fundo." src="https://user-images.githubusercontent.com/93395366/174534739-f81e075e-51a8-48ae-8e2b-68ed8fcceeef.png"></a>
 
-> status: em desenvolvimento
+> status: concluído
 
 
 # Exercício de Git e GitHub + Python
@@ -9,9 +9,12 @@
 ![GitHub forks](https://img.shields.io/github/forks/SkyArtur/cadastro_de_cliente-exercicio?style=social)
 ![GitHub Repo stars](https://img.shields.io/github/stars/SkyArtur/cadastro_de_cliente-exercicio?style=social)
 
-Exercício prático no aprendizado em Python. Pequeno software para simulação de manipulação de dados em arquivos de texto. Foram utilizados conhecimentos básicos da linguagem Python, tais como, manipulação de strings, tipos sequenciais, type casting, dunder methods e programação orientada à objetos.
+Exercício prático no aprendizado em Python. Pequeno software para simulação de manipulação de dados em arquivos de texto. 
+Foram utilizados conhecimentos básicos da linguagem Python, tais como expressões regulares, manipulação de strings, tipos
+sequenciais, type casting, dunder methods e programação orientada à objetos.
 
-Número de CPFs fictícios, mas que atendem a regra de validação para CPFs, para teste. O programa não aceita um número que não atenda o algoritmo para validação de CPF.
+Número de CPFs fictícios, mas que atendem a regra de validação para CPFs, para teste. O programa não aceita um número que 
+não atenda o algoritmo para validação de CPF.
 
 
 113.686.618-31
