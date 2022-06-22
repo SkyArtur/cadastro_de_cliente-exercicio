@@ -1,5 +1,5 @@
 from modulos.registrador import Conta, Cliente, CPF, RegistroConta, RegistroCliente
-from modulos.entrada import Menu, MeuInput
+from modulos.input_padrao import Menu, MeuInput
 from modulos.gerenciador import Gerente
 from hashlib import md5
 from time import sleep

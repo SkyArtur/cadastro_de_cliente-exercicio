@@ -1,4 +1,4 @@
-from modulos.entrada import MeuInput, Menu
+from modulos.input_padrao import MeuInput, Menu
 
 
 class Registro:
