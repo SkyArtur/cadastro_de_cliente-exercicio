@@ -1,113 +1,6 @@
-from modulos.input_padrao import MeuInput, Menu
-
-
-class Registro:
-    def __init__(self):
-        pass
-
-    @property
-    def registrar_cliente(self):
-        nome = MeuInput('Nome: ').conteudo
-        cpf = MeuInput('CPF: ').conteudo
-        while not Documento(cpf).checar:
-            cpf = MeuInput('CPF: ').conteudo
-        endereco = MeuInput('Endereço: ').conteudo
-        return [nome, Documento(cpf).cpf, endereco]
-
-    @property
-    def registrar_conta(self):
-        saldo = MeuInput('Saldo: ', float).conteudo
-        menu = Menu().menu_creditos
-        if menu == 1:
-            credito = MeuInput('Limite: ', float).conteudo
-        else:
-            credito = 0
-        disponivel = saldo + credito
-        return [saldo, credito, disponivel]
-
-
-class RegistroCliente(Registro):
-    def __init__(self):
-        super().__init__()
-        self._user = super().registrar_cliente
-
-    @property
-    def cliente(self):
-        return self._user
-
-
-class RegistroConta(Registro):
-    def __init__(self):
-        super().__init__()
-        self._account = super().registrar_conta
-
-    @property
-    def conta(self):
-        return self._account
-
-
-class Cliente:
-    def __init__(self, dados=None):
-        self.__dados = dados
-        self.__nome = self.__dados[0]
-        self.__cpf = self.__dados[1]
-        self.__endereco = self.__dados[2]
-
-    @property
-    def dados(self):
-        return self.__dados
-
-    @property
-    def nome(self):
-        return self.__nome
-
-    @property
-    def cpf(self):
-        return self.__cpf
-
-    @property
-    def endereco(self):
-        return self.__endereco
-
-
-class Conta:
-    def __init__(self, dados=None):
-        self.__dados = dados
-        self.__saldo = self.__dados[0]
-        self.__credito = self.__dados[1]
-        self.__disponivel = self.__dados[2]
-
-    @property
-    def dados(self):
-        return [self.__saldo, self.__credito, self.__disponivel]
-
-    @property
-    def saldo(self):
-        return self.__saldo
-
-    @property
-    def credito(self):
-        return self.__credito
-
-    @credito.setter
-    def credito(self, valor: float):
-        self.__credito = valor
-        self.__disponivel = self.__saldo + self.__credito
-
-    def validar_saque(self, valor):
-        return valor <= self.__disponivel
-
-    def sacar(self, valor):
-        if self.validar_saque(valor):
-            self.__saldo -= valor
-            self.__disponivel = self.__saldo + self.__credito
-            return True
-        else:
-            return False
-
-    def depositar(self, valor):
-        self.__saldo += valor
-        self.__disponivel = self.__saldo + self.__credito
+from pycep_correios import get_address_from_cep, WebService, exceptions
+from modulos.input_padrao import InputPadrao, Menu
+from modulos.mensagens import *
 
 
 class CPF:
@@ -125,16 +18,16 @@ class CPF:
 
     @property
     def validar(self):
-        d1, d2 = 0, 0
+        digito_1, digito_2 = 0, 0
         for i, j in enumerate(range(10, 1, -1)):
-            d1 += int(self.__cpf[i]) * j
-        d1 = 11 - (d1 % 11)
-        d1 = 0 if d1 > 9 else d1
+            digito_1 += int(self.__cpf[i]) * j
+        digito_1 = 11 - (digito_1 % 11)
+        digito_1 = 0 if digito_1 > 9 else digito_1
         for i, j in enumerate(range(11, 1, -1)):
-            d2 += int(self.__cpf[i]) * j
-        d2 = 11 - (d2 % 11)
-        d2 = 0 if d2 > 9 else d2
-        if f"{d1}{d2}" in self.__cpf:
+            digito_2 += int(self.__cpf[i]) * j
+        digito_2 = 11 - (digito_2 % 11)
+        digito_2 = 0 if digito_2 > 9 else digito_2
+        if f"{digito_1}{digito_2}" in self.__cpf:
             return True
         else:
             return False
@@ -151,12 +44,129 @@ class Documento(CPF):
             if CPF(self.__doc).validar:
                 return True
             else:
-                print(msg_doc)
+                print(msg_registrador_01)
                 return False
         else:
-            print(msg_doc)
+            print(msg_registrador_01)
 
 
-msg_doc = """ErroDocumento ~01:
-    Número do documento não é válido!
-"""
+class Endereco:
+    def __init__(self, entrada='=> '):
+        self.__end = self.__validar_cep(entrada)
+        self.__numero = InputPadrao('Número da residência:\n=> ', int).conteudo
+        self.__end_linha_1 = f"{self.__end['logradouro']} nº{self.__numero} | CEP:{self.__end['cep']}"
+        self.__end_linha_2 = f"{self.__end['bairro']} - {self.__end['cidade']}/{self.__end['uf']}"
+
+    def __validar_cep(self, entrada):
+        while True:
+            self.__cep = InputPadrao(entrada).cep_input()
+            try:
+                self.__cep = get_address_from_cep(self.__cep, webservice=WebService.VIACEP)
+            except:
+                print(msg_registrador_02)
+                continue
+            else:
+                print(msg_registrador_03)
+                return self.__cep
+
+    @property
+    def endereco(self):
+        return {'endereco': self.__end_linha_1, 'bairro': self.__end_linha_2}
+
+
+class Cliente:
+    def __init__(self, dados):
+        self.__nome = dados['nome']
+        self.__cpf = dados['cpf']
+        self.__endereco = dados['endereco']
+        self.__bairro = dados['bairro']
+
+    @property
+    def dados_cliente(self):
+        return {'nome': self.__nome, 'cpf': self.__cpf,
+                'endereco': self.__endereco, 'bairro': self.__bairro}
+
+    @property
+    def nome(self):
+        return self.__nome
+
+    @nome.setter
+    def nome(self, nome):
+        self.__nome = nome
+
+    @property
+    def cpf(self):
+        return self.__cpf
+
+    @cpf.setter
+    def cpf(self, cpf):
+        self.__cpf = cpf
+
+    @property
+    def endereco(self):
+        return self.__endereco
+
+    @endereco.setter
+    def endereco(self, endereco):
+        self.__endereco = endereco
+
+
+class Conta:
+    def __init__(self, dados):
+        self.__saldo = float(dados['saldo'])
+        self.__credito = float(dados['credito'])
+        self.__disponivel = self.__saldo + self.__credito
+
+    @property
+    def dados_conta(self):
+        return {'saldo': self.__saldo, 'credito': self.__credito,
+                'disponivel': self.__saldo + self.__credito}
+
+    @property
+    def saldo(self):
+        return self.__saldo
+
+    @property
+    def credito(self):
+        return self.__credito
+
+    @credito.setter
+    def credito(self, valor: float):
+        self.__credito = valor
+
+    @property
+    def disponivel(self):
+        return self.__disponivel
+
+    def __validar_saque(self, valor: float):
+        return valor <= self.__disponivel
+
+    def sacar(self, valor: float):
+        if self.__validar_saque(valor):
+            self.__saldo -= valor
+            return True
+        else:
+            return False
+
+    def depositar(self, valor: float):
+        self.__saldo += valor
+
+
+class Registro:
+    @property
+    def registrar_cliente(self):
+        nome = InputPadrao('Nome: ').conteudo
+        cpf = InputPadrao('CPF: ').conteudo
+        while not Documento(cpf).checar:
+            cpf = InputPadrao('CPF: ').conteudo
+        endereco = Endereco('Digite o seu CEP: ').endereco
+        return {'nome': nome, 'cpf': Documento(cpf).cpf, **endereco}
+
+    @property
+    def registrar_conta(self):
+        saldo = InputPadrao('Saldo: ', float).conteudo
+        if Menu().menu_creditos == 1:
+            credito = InputPadrao('Limite: ', float).conteudo
+        else:
+            credito = 0
+        return {'saldo': saldo, 'credito': credito}
