@@ -1,6 +1,7 @@
-from modulos.registrador import Conta, Cliente, CPF, RegistroConta, RegistroCliente
-from modulos.input_padrao import Menu, MeuInput
-from modulos.gerenciador import Gerente
+from modulos.registrador import *
+from modulos.mensagens import *
+from modulos.input_padrao import Menu, InputPadrao
+from modulos.gerenciador import Gerenciador
 from hashlib import md5
 from time import sleep
 from sys import exit
@@ -20,139 +21,111 @@ def encerrar():
 def cadastrar_cliente():
     limpar_tela()
     print(forma2)
-    cliente = Cliente(RegistroCliente().cliente)
+    cliente = Cliente(Registro().registrar_cliente)
     nome_arquivo = md5(bytes(cliente.cpf, 'utf-8')).hexdigest()
-    if Gerente(nome_arquivo).procurar_conta():
-        print(msg1)
+    if Gerenciador(nome_arquivo).procurar():
+        print(msg_principal_01)
     else:
-        conta = Conta(RegistroConta().conta)
-        dados_principais = cliente.dados + conta.dados
-        Gerente(nome_arquivo, dados_principais).escrever_extrato(op=0, valor=f"R${conta.saldo:.2f}")
-        print(Gerente(nome_arquivo, dados_principais).escrever_cliente())
+        conta = Conta(Registro().registrar_conta)
+        dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
+        Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato('Abertura', f"R${conta.saldo:.2f}")
+        print(Gerenciador(nome_arquivo, dados_principais).escrever_conta())
 
 
 def buscar_dados_do_cliente():
     limpar_tela()
     print(forma3)
-    nome_arquivo = MeuInput('Digite o CPF: ').conteudo
-    while not CPF(nome_arquivo).validar:
-        print(msg2)
-        nome_arquivo = MeuInput('Digite o CPF: ').conteudo
+    nome_arquivo = InputPadrao('Digite o CPF: ').conteudo
+    while not Documento(nome_arquivo).checar:
+        print(msg_principal_02)
+        nome_arquivo = InputPadrao('Digite o CPF: ').conteudo
     else:
-        nome_arquivo = md5(bytes(CPF(nome_arquivo).cpf, 'utf-8')).hexdigest()
-        if Gerente(nome_arquivo).procurar_conta():
+        nome_arquivo = md5(bytes(Documento(nome_arquivo).cpf, 'utf-8')).hexdigest()
+        if Gerenciador(nome_arquivo).procurar():
             limpar_tela()
-            Gerente(nome_arquivo).escrever_extrato(op=1, valor="Consulta")
-            Gerente(nome_arquivo).visualizar_conta()
+            Gerenciador(nome_arquivo, seletor='ext').escrever_extrato("Consulta", "------")
+            Gerenciador(nome_arquivo).visualizar()
         else:
             limpar_tela()
-            print(msg3)
+            print(msg_principal_03)
 
 
 def operacao_em_conta():
     cliente, conta = 0, 0
+    ref_cliente = ['nome', 'cpf', 'endereco', 'bairro']
+    ref_conta = ['saldo', 'credito']
     limpar_tela()
     print(forma4)
-    nome_arquivo = MeuInput('Digite o CPF: ').conteudo
-    if CPF(nome_arquivo).validar:
-        nome_arquivo = md5(bytes(CPF(nome_arquivo).cpf, 'utf-8')).hexdigest()
+    nome_arquivo = InputPadrao('Digite o CPF: ').conteudo
+    if Documento(nome_arquivo).checar:
+        nome_arquivo = md5(bytes(Documento(nome_arquivo).cpf, 'utf-8')).hexdigest()
         limpar_tela()
-        Gerente(nome_arquivo).visualizar_conta()
-        dados_principais = Gerente(nome_arquivo).extrair_dados()
-        cliente = Cliente(dados_principais[:3])
-        conta = Conta(dados_principais[3:])
+        Gerenciador(nome_arquivo).visualizar()
+        dados_principais = Gerenciador(nome_arquivo).extrair_dados()
+        cliente = Cliente(dict({d for d in dados_principais.items() if d[0] in ref_cliente}))
+        conta = Conta(dict({d for d in dados_principais.items() if d[0] in ref_conta}))
     else:
         limpar_tela()
-        print(msg2)
+        print(msg_principal_02)
     while True:
-        menu = Menu().menu_operacoes
+        op = Menu().menu_operacoes
         # ------------------------------------ Saque -----------------------------------------------------------
-        if menu == 1:
-            valor = MeuInput('Digite o valor: ', float).conteudo
+        if op == 1:
+            valor = InputPadrao('Digite o valor: ', float).conteudo
             if conta.sacar(valor):
-                dados_principais = cliente.dados + conta.dados
-                Gerente(nome_arquivo, dados_principais).escrever_extrato(op=3, valor=f"R${valor:.2f}")
-                Gerente(nome_arquivo, dados_principais).escrever_cliente()
+                dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
+                Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato("Saque", f"R${valor:.2f}")
+                Gerenciador(nome_arquivo, dados_principais).escrever_conta()
                 limpar_tela()
             else:
                 limpar_tela()
-                print(msg4)
-            Gerente(nome_arquivo).visualizar_conta()
+                print(msg_principal_04)
+            Gerenciador(nome_arquivo).visualizar()
         # ------------------------------------ Depósito --------------------------------------------------------
-        elif menu == 2:
-            valor = MeuInput('Digite o valor: ', float).conteudo
+        elif op == 2:
+            valor = InputPadrao('Digite o valor: ', float).conteudo
             conta.depositar(valor)
-            dados_principais = cliente.dados + conta.dados
-            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=2, valor=f"R${valor:.2f}")
-            Gerente(nome_arquivo, dados_principais).escrever_cliente()
+            dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
+            Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato("Depósito", f"R${valor:.2f}")
+            Gerenciador(nome_arquivo, dados_principais).escrever_conta()
             limpar_tela()
-            Gerente(nome_arquivo).visualizar_conta()
+            Gerenciador(nome_arquivo).visualizar()
         # ------------------------------------ Extrato ---------------------------------------------------------
-        elif menu == 3:
+        elif op == 3:
             limpar_tela()
-            Gerente(nome_arquivo).escrever_extrato(op=1, valor=f"Extrato")
-            Gerente(nome_arquivo).visualizar_conta()
-            Gerente(nome_arquivo).visualizar_extrato()
-        # ------------------------------------ Retornar --------------------------------------------------------
-        elif menu == 4:
-            valor = MeuInput('Digite o novo Crédito: ', float).conteudo
+            Gerenciador(nome_arquivo).escrever_extrato("Extrato", "------")
+            Gerenciador(nome_arquivo).visualizar()
+            Gerenciador(nome_arquivo, seletor='ext').visualizar()
+        # ------------------------------------ Novo Crédito ----------------------------------------------------
+        elif op == 4:
+            valor = InputPadrao('Digite o novo Crédito: ', float).conteudo
             conta.credito = valor
-            dados_principais = cliente.dados + conta.dados
-            Gerente(nome_arquivo, dados_principais).escrever_extrato(op=4, valor=f"R${valor:.2f}")
-            Gerente(nome_arquivo, dados_principais).escrever_cliente()
+            dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
+            Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato('Novo Crédito', f"R${valor:.2f}")
+            Gerenciador(nome_arquivo, dados_principais).escrever_conta()
             limpar_tela()
-            Gerente(nome_arquivo).visualizar_conta()
+            Gerenciador(nome_arquivo).visualizar()
         # ------------------------------------ Retornar --------------------------------------------------------
         else:
             limpar_tela()
             break
 
 
-abertura = '''Exercício prático no aprendizado em Python.
-Copyright (c) 2022 - Ponta Grossa/PR. 
-Projeto Cadastro de Cliente.
-Artur dos Santos Shon - EAD - UNINTER - 2021.'''
-forma1 = '''------------------------------------------
-     Sistema de Cadastro de Clientes
-------------------------------------------'''
-forma2 = '''------------------------------------------
-            Cadastro do Cliente
-------------------------------------------'''
-forma3 = '''------------------------------------------
-         Buscar Dados do Cliente
-------------------------------------------'''
-forma4 = '''------------------------------------------
-           Operações em Conta
-------------------------------------------'''
-msg1 = '''ErroCadastro ~01:
-    Cliente já cadastrado!
-'''
-msg2 = '''ErroCadastro ~02:
-    Número de CPF inválido!
-'''
-msg3 = '''ErroCadastro ~03:
-    Cliente não encontrado!
-'''
-msg4 = '''ErroLimite ~01:
-    O valor de saque excede seu limite disponível
-'''
-
 if __name__ == "__main__":
     limpar_tela()
     print(abertura)
     while True:
-        # --------------------------------------------------------------------------------------------------------------
         print(forma1)
-        menu = Menu().menu_inicial
-        # ------------------------------------- Cadastrar Cliente ------------------------------------------------------
-        if menu == 1:
+        opcao = Menu().menu_inicial
+        # Cadastrar Cliente
+        if opcao == 1:
             cadastrar_cliente()
-        # ------------------------------------- Buscar Dados do Cliente ------------------------------------------------
-        elif menu == 2:
+        # Buscar Dados do Cliente
+        elif opcao == 2:
             buscar_dados_do_cliente()
-        # --------------------------------------- Operações em Conta ---------------------------------------------------
-        elif menu == 3:
+        # Operações em Conta
+        elif opcao == 3:
             operacao_em_conta()
-        # ----------------------------------------- Encerrar Programa --------------------------------------------------
+        # Encerrar Programa
         else:
             encerrar()
