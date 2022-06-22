@@ -6,33 +6,25 @@ from modulos.mensagens import *
 # ----------------------------------------------------------------------------------------------------------------------
 class InputPadrao:
     def __init__(self, input_usuario="=> ", tipo_input=None, minn=None, maxx=None):
-        """Entrada de dados do programa.
+        """Entrada de dados do programa. Construtor da classe, disponibiliza o
+        input para o usuário, pode controlar o tipo de input desejado (int, float, str),
+        pode controlar a dimensão numérica dos menus (minn, maxx).
 
-        Construtor:
+        Constructors:
+            - __ini__()
 
-        Construtor da classe, disponibiliza o input para o usuário, pode controlar
-        o tipo de input desejado (int, float, str), pode controlar a dimensão numérica
-        dos menus (minn, maxx).
+        Privates:
+            - __meu_input()
 
-        __ini__()
+        Operators:
+            - __repr__(), __str__(), __len__(), __iter__(), __eq__(), __le__(), __lt__(), __ge__(), __gt__().
 
-        Operadores:
-
-        __repr__(), __str__(), __len__(), __iter__(),
-        __eq__(), __le__(), __lt__(), __ge__(), __gt__().
-
-        Métodos:
-
-        menu_input()
-        cep_input()
-
-        Privado:
-
-        __meu_input()
+        Methods:
+            - menu_input()
+            - cep_input()
 
         Properties:
-
-        @conteudo
+            - conteudo
 
         :param input_usuario: Any
         :param tipo_input: int: int | float: float | str: None
@@ -75,8 +67,7 @@ class InputPadrao:
 
     @property
     def conteudo(self):
-        """
-        Getter da classe InputPadrao.
+        """Getter da classe InputPadrao.
 
         :return: input do usuário -> int | float | str
         """
@@ -143,11 +134,10 @@ class InputPadrao:
 class Menu:
     """Classe para construção dos menus do programa.
 
-    Propriedades:
-
-    @menu_inicial,
-    @menu_creditos,
-    @menu_operacoes.
+    Properties:
+       - menu_inicial
+       - menu_creditos
+       - menu_operacoes
     """
 
     @property

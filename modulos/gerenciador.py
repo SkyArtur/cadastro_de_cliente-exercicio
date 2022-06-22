@@ -9,26 +9,33 @@ from os import mkdir
 # ----------------------------------------------------------------------------------------------------------------------
 class Relatorio:
     def __init__(self, dados: dict):
-        """Modela o relatório a ser impresso.
+        """Modela o relatório a ser salvo à partir
+        do conteúdo do dicionário recebido como parâmetro.
 
         Construtor:
+            - __ini__()
 
-        __ini__()
+        Method:
+            - relatorio_conta()
+            - relatorio_extrato()
 
-        Métodos:
+        Property:
+            - data_hora
 
-        relatorio_conta(),
-        relatorio_extrato()
-
-        :param dados: dict - dados para a impressão.
+        :param dados: dict('nome': str, 'cpf': str, 'endereco': str,
+        'bairro': str, 'saldo': float, 'credito': float, 'disponivel': float).
         """
         self.__dados = dados
-        self.data = strftime('%d/%m/%Y - %H:%M', localtime())
+        self.__data = strftime('%d/%m/%Y - %H:%M', localtime())
+
+    @property
+    def data_hora(self):
+        return self.__data
 
     def relatorio_conta(self):
         """Modela o relatório do cliente.
 
-        :return: str: relatório
+        :return: str(relatório)
         """
         relatorio = f"Nome: {self.__dados['nome']:<25} | CPF: {self.__dados['cpf']}\n" \
                     f"Logradouro: {self.__dados['endereco']}\n" \
@@ -40,7 +47,7 @@ class Relatorio:
     def relatorio_extrato(self, op, valor):
         """Modela o relatório do extrato.
 
-        :return: str: relatório
+        :return: str(relatório)
         """
         relatorio = f"{op:^25} | {self.data:^25} | {valor:^25}"
         return relatorio
@@ -53,20 +60,25 @@ class Gerenciador(Relatorio):
     def __init__(self, diretorio_cliente: str, dados=None, seletor=None):
         """Manipula a criação  e edição dos arquivos de textos do programa.
 
-        Privado:
+        Construtor:
+            - __init__()
 
-        __definir_nome_arquivo()
+        Private:
+            - __definir_nome_arquivo()
 
-        Métodos:
+        Static:
+            - definir_diretorio
 
-        procurar(),
-        visualizar(),
-        escrever_extrato(),
-        escrever_conta(),
-        extrair_dados(),
+        Method:
+            - procurar(),
+            - visualizar(),
+            - escrever_extrato(),
+            - escrever_conta(),
+            - extrair_dados(),
 
-        :param diretorio_cliente: str
-        :param dados: dict
+        :param diretorio_cliente: str(hash_string_cpf)
+        :param dados: dict('nome': str, 'cpf': str, 'endereco': str,
+        'bairro': str, 'saldo': float, 'credito': float, 'disponivel': float).
         :param seletor: None | str('ext')
         """
         super().__init__(dados)
@@ -74,16 +86,25 @@ class Gerenciador(Relatorio):
         self.__arquivo_conta = f'./armazenamento/{diretorio_cliente}/conta.txt'
         self.__arquivo_extrato = f'./armazenamento/{diretorio_cliente}/extrato.txt'
         self.__arquivo = self.__definir_nome_arquivo(seletor)
+        self.define_diretorio()
+
+    @staticmethod
+    def define_diretorio():
+        """Realiza criação do diretório de armazenamento.
+
+        :return: bool(True | False)
+        """
         try:
             mkdir('./armazenamento/')
+            return True
         except FileExistsError:
-            pass
+            return False
 
     def __definir_nome_arquivo(self, seletor):
         """Método para definição do arquivo a ser visualizado ou procurado.
 
         :param seletor: None | str('ext').
-        :return: str - nome do arquivo.
+        :return: str(nome do arquivo).
         """
         if seletor == 'ext':
             return self.__arquivo_extrato
@@ -94,7 +115,7 @@ class Gerenciador(Relatorio):
         """Procura pelo arquivo selecionado pelo método __definir_nome_arquivo().
 
         :param seletor: None | str('ext').
-        :return: bool -> True | False
+        :return: bool(True | False)
         """
         try:
             arquivo_conta = open(self.__definir_nome_arquivo(seletor), 'rt')
@@ -107,7 +128,7 @@ class Gerenciador(Relatorio):
     def visualizar(self):
         """Exibe no console o conteúdo do arquivo solicitado.
 
-        :return: str -> conteúdo do arquivo.
+        :return: str(conteúdo do arquivo | mensagem de erro)
         """
         try:
             arquivo_conta = open(self.__arquivo, 'rt')
@@ -119,9 +140,9 @@ class Gerenciador(Relatorio):
     def escrever_extrato(self, op, valor):
         """Método responsável pela edição do arquivo de extrato.
 
-        :param op: str -> tipo de operação realizada em conta.
-        :param valor: str -> valor da operação
-        :return: str
+        :param op: str('Operação').
+        :param valor: str('000.0')
+        :return: str(mensagem)
         """
         if self.procurar('ext'):
             arquivo_extrato = open(self.__arquivo_extrato, 'at')
@@ -143,7 +164,7 @@ class Gerenciador(Relatorio):
     def escrever_conta(self):
         """Método responsável pela edição do arquivo de dados da conta.
 
-        :return: str
+        :return: str(mensagem)
         """
         if self.procurar():
             arquivo_cliente = open(self.__arquivo, 'wt+')
@@ -163,7 +184,8 @@ class Gerenciador(Relatorio):
     def extrair_dados(self):
         """Método para extração dos dados da conta em arquivo de texto.
 
-        :return: dict -> dados
+        :return: dict('nome': str, 'cpf': str, 'endereco': str,
+        'bairro': str, 'saldo': float, 'credito': float, 'disponivel': float).
         """
         dados = dict()
         padrao_cpf = '[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}'

@@ -7,16 +7,17 @@ class CPF:
     def __init__(self, documento):
         """Classe para validação do numero de CPF.
 
-        Operadores:
+        Constructors:
+            - __init__()
 
-        __str__().
+        Operators:
+            - __str__()
 
-        Propriedades:
+        Properties:
+            - cpf
+            - validar
 
-        @cpf,
-        @validar.
-
-        :param documento: str -> numero do documento.
+        :param documento: str(xxxxxxxxxxx).
         """
         self.__cpf = documento
         self.__cpf_form = f"{self.__cpf[:3]}.{self.__cpf[3:6]}." \
@@ -29,12 +30,16 @@ class CPF:
     def cpf(self):
         """Getter da Classe.
 
-        :return: str -> CPF formatado.
+        :return: str(000.000.000-00).
         """
         return self.__cpf_form
 
     @property
     def validar(self):
+        """Algoritmo para validação de número de CPF.
+
+        :return: bool(True | False)
+        """
         digito_1, digito_2 = 0, 0
         for i, j in enumerate(range(10, 1, -1)):
             digito_1 += int(self.__cpf[i]) * j
@@ -54,11 +59,13 @@ class Documento(CPF):
     def __init__(self, documento: str):
         """Classe para verificação final do documento.
 
-        Propriedade:
+        Constructors:
+            - __init__()
 
-        @checar.
+        Properties:
+            - checar
 
-        :param documento: str -> número do documento
+        :param documento: str(xxxxxxxxxxx).
         """
         super().__init__(documento)
         self.__doc = documento
@@ -67,7 +74,7 @@ class Documento(CPF):
     def checar(self):
         """Verifica o tamanho da string passada, e se ela contém apenas números.
 
-        :return: bool -> True | False
+        :return: bool(True | False)
         """
         if len(self.__doc) == 11 and self.__doc.isalnum():
             if CPF(self.__doc).validar:
@@ -83,15 +90,16 @@ class Endereco:
     def __init__(self, entrada='=> '):
         """Obtém o endereço através do CEP.
 
-        Privado:
+        Constructors:
+            - __init__()
 
-        __validar_cep
+        Privates:
+            - __validar_cep
 
-        Propriedade:
+        Properties:
+            - endereco
 
-        @endereco
-
-        :param entrada: str -> input usuário.
+        :param entrada: input('texto').
         """
         self.__end = self.__validar_cep(entrada)
         self.__numero = InputPadrao('Número da residência:\n=> ', int).conteudo
@@ -103,7 +111,7 @@ class Endereco:
         pycep_correios para realizar a consulta.
 
         :param entrada: str -> CEP
-        :return: dict -> dados endereço
+        :return: dict(pycep_correios())
         """
         while True:
             self.__cep = InputPadrao(entrada).cep_input()
@@ -120,16 +128,27 @@ class Endereco:
     def endereco(self):
         """Getter da classe.
 
-        :return: dict -> dados endereço.
+        :return: dict('endereco': str, 'bairro': str).
         """
         return {'endereco': self.__end_linha_1, 'bairro': self.__end_linha_2}
 
 
 class Cliente:
-    def __init__(self, dados):
-        """
+    def __init__(self, dados: dict):
+        """Instância o objeto Cliente.
 
-        :param dados:
+        Constructors:
+            - __init__()
+
+        Operators:
+            - __str__()
+
+        Properties:
+            - dados_cliente
+            - cpf
+
+
+        :param dados: dict('nome': str, 'cpf': str, 'endereco': str, 'bairro': str)
         """
         self.__nome = dados['nome']
         self.__cpf = dados['cpf']
@@ -138,42 +157,84 @@ class Cliente:
 
     @property
     def dados_cliente(self):
+        """Getter da classe
+
+        :return: dict('nome': str, 'cpf': str, 'endereco': str, 'bairro': str)
+        """
         return {'nome': self.__nome, 'cpf': self.__cpf,
                 'endereco': self.__endereco, 'bairro': self.__bairro}
 
-    @property
-    def nome(self):
-        return self.__nome
-
-    @nome.setter
-    def nome(self, nome):
-        self.__nome = nome
+    def __str__(self):
+        return self.__cpf
 
     @property
     def cpf(self):
+        """Getter da classe
+
+        :return: str(xxx.xxx.xxx-xx)
+        """
         return self.__cpf
-
-    @cpf.setter
-    def cpf(self, cpf):
-        self.__cpf = cpf
-
-    @property
-    def endereco(self):
-        return self.__endereco
-
-    @endereco.setter
-    def endereco(self, endereco):
-        self.__endereco = endereco
 
 
 class Conta:
-    def __init__(self, dados):
+    def __init__(self, dados: dict):
+        """Instância o objeto Conta
+
+        Constructors:
+            - __init__()
+
+        Privates:
+            - __validar_saque()
+
+        Methods:
+            - sacar
+            - depositar
+
+        Properties:
+            - dados_conta
+            - saldo
+            - credito
+            - disponivel
+
+        :param dados: dict('saldo': float, 'credito': float)
+        """
         self.__saldo = float(dados['saldo'])
         self.__credito = float(dados['credito'])
         self.__disponivel = self.__saldo + self.__credito
 
+    def __validar_saque(self, valor: float):
+        """Verifica se há valor disponivel para saque.
+
+        :param valor: float(0.0)
+        :return: bool(True | False)
+        """
+        return valor <= self.__disponivel
+
+    def sacar(self, valor: float):
+        """Decrementa valor de entrada em atributo saldo.
+
+        :param valor: float(0.0)
+        :return: bool(True | False)
+        """
+        if self.__validar_saque(valor):
+            self.__saldo -= valor
+            return True
+        else:
+            return False
+
+    def depositar(self, valor: float):
+        """Incrementa valor em atributo saldo.
+
+        :param valor: float(0.0)
+        """
+        self.__saldo += valor
+
     @property
     def dados_conta(self):
+        """
+
+        :return:
+        """
         return {'saldo': self.__saldo, 'credito': self.__credito,
                 'disponivel': self.__saldo + self.__credito}
 
@@ -192,19 +253,6 @@ class Conta:
     @property
     def disponivel(self):
         return self.__disponivel
-
-    def __validar_saque(self, valor: float):
-        return valor <= self.__disponivel
-
-    def sacar(self, valor: float):
-        if self.__validar_saque(valor):
-            self.__saldo -= valor
-            return True
-        else:
-            return False
-
-    def depositar(self, valor: float):
-        self.__saldo += valor
 
 
 class Registro:
