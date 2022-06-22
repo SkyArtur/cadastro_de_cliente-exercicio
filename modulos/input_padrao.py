@@ -2,7 +2,7 @@ from modulos.mensagens import *
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#              Classe MeuInput
+#              Classe InputPadrao
 # ----------------------------------------------------------------------------------------------------------------------
 class InputPadrao:
     def __init__(self, input_usuario="=> ", tipo_input=None, minn=None, maxx=None):
@@ -76,7 +76,7 @@ class InputPadrao:
     @property
     def conteudo(self):
         """
-        Getter da classe MeuInput.
+        Getter da classe InputPadrao.
 
         :return: input do usuário -> int | float | str
         """
