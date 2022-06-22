@@ -231,33 +231,59 @@ class Conta:
 
     @property
     def dados_conta(self):
-        """
+        """Getter da classe.
 
-        :return:
+        :return:dict('saldo': float: 'credito': float, 'disponivel': float)
         """
         return {'saldo': self.__saldo, 'credito': self.__credito,
                 'disponivel': self.__saldo + self.__credito}
 
     @property
     def saldo(self):
+        """Getter da classe
+
+        :return: float(saldo)
+        """
         return self.__saldo
 
     @property
     def credito(self):
+        """Getter da classe.
+
+        :return: float(credito)
+        """
         return self.__credito
 
     @credito.setter
     def credito(self, valor: float):
+        """Setter da classe.
+
+        :param valor: float(0.0)
+        """
         self.__credito = valor
 
     @property
     def disponivel(self):
+        """Getter da classe.
+
+        :return: float(0.0)
+        """
         return self.__disponivel
 
 
 class Registro:
+    """Classe que realiza o registro da conta.
+
+    Properties:
+        - registrar_cliente
+        - registrar_conta
+    """
     @property
     def registrar_cliente(self):
+        """Processa o registro do cliente.
+
+        :return: dict('nome': str, 'cpf': str, 'endereco': str)
+        """
         nome = InputPadrao('Nome: ').conteudo
         cpf = InputPadrao('CPF: ').conteudo
         while not Documento(cpf).checar:
@@ -267,6 +293,10 @@ class Registro:
 
     @property
     def registrar_conta(self):
+        """Processa o registro do cliente.
+
+        :return: dict('saldo': float, 'credito': float)
+        """
         saldo = InputPadrao('Saldo: ', float).conteudo
         if Menu().menu_creditos == 1:
             credito = InputPadrao('Limite: ', float).conteudo
