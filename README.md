@@ -1,5 +1,7 @@
 <a align="center"><img width="100%" heigth="100" alt="Imagem do funcionamento do programa em uma janela com o código ao fundo." src="https://user-images.githubusercontent.com/93395366/174534739-f81e075e-51a8-48ae-8e2b-68ed8fcceeef.png"></a>
 
+> status: em desenvolvimento
+
 
 # Exercício de Git e GitHub + Python
 
