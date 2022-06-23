@@ -14,7 +14,7 @@ class Relatorio:
         do conteúdo do dicionário recebido como parâmetro.
 
         Construtor:
-            - __ini__()
+            - __init__()
 
         Method:
             - relatorio_conta()
