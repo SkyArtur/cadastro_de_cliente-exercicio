@@ -24,11 +24,11 @@ class CPF:
         :param documento: str(xxxxxxxxxxx).
         """
         self.__cpf = documento
-        self.__cpf_form = f"{self.__cpf[:3]}.{self.__cpf[3:6]}." \
+        self.__cpf_formatado = f"{self.__cpf[:3]}.{self.__cpf[3:6]}." \
                           f"{self.__cpf[6:9]}-{self.__cpf[9:]}"
 
     def __str__(self):
-        return self.__cpf_form
+        return self.__cpf_formatado
 
     @property
     def cpf(self):
@@ -36,7 +36,7 @@ class CPF:
 
         :return: str(000.000.000-00).
         """
-        return self.__cpf_form
+        return self.__cpf_formatado
 
     @property
     def validar(self):
@@ -44,16 +44,16 @@ class CPF:
 
         :return: bool(True | False)
         """
-        digito_1, digito_2 = 0, 0
+        primeiro_digito, segundo_digito = 0, 0
         for i, j in enumerate(range(10, 1, -1)):
-            digito_1 += int(self.__cpf[i]) * j
-        digito_1 = 11 - (digito_1 % 11)
-        digito_1 = 0 if digito_1 > 9 else digito_1
+            primeiro_digito += int(self.__cpf[i]) * j
+        primeiro_digito = 11 - (primeiro_digito % 11)
+        primeiro_digito = 0 if primeiro_digito > 9 else primeiro_digito
         for i, j in enumerate(range(11, 1, -1)):
-            digito_2 += int(self.__cpf[i]) * j
-        digito_2 = 11 - (digito_2 % 11)
-        digito_2 = 0 if digito_2 > 9 else digito_2
-        if f"{digito_1}{digito_2}" in self.__cpf:
+            segundo_digito += int(self.__cpf[i]) * j
+        segundo_digito = 11 - (segundo_digito % 11)
+        segundo_digito = 0 if segundo_digito > 9 else segundo_digito
+        if f"{primeiro_digito}{segundo_digito}" in self.__cpf:
             return True
         else:
             return False
@@ -75,7 +75,7 @@ class Documento(CPF):
         :param documento: str(xxxxxxxxxxx).
         """
         super().__init__(documento)
-        self.__doc = documento
+        self.__documento = documento
 
     @property
     def checar(self):
@@ -83,14 +83,14 @@ class Documento(CPF):
 
         :return: bool(True | False)
         """
-        if len(self.__doc) == 11 and self.__doc.isalnum():
-            if CPF(self.__doc).validar:
+        if len(self.__documento) == 11 and self.__documento.isalnum():
+            if CPF(self.__documento).validar:
                 return True
             else:
-                print(msg_registrador_01)
+                print(cpf_invalido)
                 return False
         else:
-            print(msg_registrador_01)
+            print(cpf_invalido)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -111,10 +111,10 @@ class Endereco:
 
         :param entrada: input('texto').
         """
-        self.__end = self.__validar_cep(entrada)
+        self.__items = self.__validar_cep(entrada)
         self.__numero = InputPadrao('Número da residência:\n=> ', int).conteudo
-        self.__end_linha_1 = f"{self.__end['logradouro']} nº{self.__numero} | CEP:{self.__end['cep']}"
-        self.__end_linha_2 = f"{self.__end['bairro']} - {self.__end['cidade']}/{self.__end['uf']}"
+        self.__endereco = f"{self.__items['logradouro']} nº{self.__numero} | CEP:{self.__items['cep']}"
+        self.__bairro = f"{self.__items['bairro']} - {self.__items['cidade']}/{self.__items['uf']}"
 
     def __validar_cep(self, entrada):
         """Método privado para validação do número de CEP. Utiliza a API
@@ -128,10 +128,11 @@ class Endereco:
             try:
                 self.__cep = get_address_from_cep(self.__cep, webservice=WebService.VIACEP)
             except:
-                print(msg_registrador_02)
+                print(cep_invalido)
                 continue
             else:
-                print(msg_registrador_03)
+                print(endereco_encontrado)
+                print(f"{self.__cep['logradouro']} - {self.__cep['cidade']}/{self.__cep['uf']}")
                 return self.__cep
 
     @property
@@ -140,7 +141,7 @@ class Endereco:
 
         :return: dict('endereco': str, 'bairro': str).
         """
-        return {'endereco': self.__end_linha_1, 'bairro': self.__end_linha_2}
+        return {'endereco': self.__endereco, 'bairro': self.__bairro}
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -290,16 +291,16 @@ class Conta:
 # ----------------------------------------------------------------------------------------------------------------------
 #                       Classe Registro
 # ----------------------------------------------------------------------------------------------------------------------
-class Registro:
+class Registrador:
     """Classe que realiza o registro da conta.
 
     Properties:
-        - registrar_cliente
-        - registrar_conta
+        - colete_dados_cliente
+        - colete_dados_conta
     """
 
     @property
-    def registrar_cliente(self):
+    def colete_dados_cliente(self):
         """Processa o registro do cliente.
 
         :return: dict('nome': str, 'cpf': str, 'endereco': str)
@@ -312,7 +313,7 @@ class Registro:
         return {'nome': nome, 'cpf': Documento(cpf).cpf, **endereco}
 
     @property
-    def registrar_conta(self):
+    def colete_dados_conta(self):
         """Processa o registro do cliente.
 
         :return: dict('saldo': float, 'credito': float)

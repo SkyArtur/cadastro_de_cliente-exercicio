@@ -71,11 +71,11 @@ class Gerenciador(Relatorio):
             - definir_diretorio
 
         Method:
-            - procurar(),
-            - visualizar(),
-            - escrever_extrato(),
-            - escrever_conta(),
-            - extrair_dados(),
+            - procure_arquivo(),
+            - mostre_arquivo(),
+            - escreva_arquivo_extrato(),
+            - escreva_arquivo_conta(),
+            - retire_dados_do_arquivo(),
 
         :param diretorio_cliente: str(hash_string_cpf)
         :param dados: dict('nome': str, 'cpf': str, 'endereco': str,
@@ -86,11 +86,11 @@ class Gerenciador(Relatorio):
         self.__diretorio = f'./armazenamento/{diretorio_cliente}'
         self.__arquivo_conta = f'./armazenamento/{diretorio_cliente}/conta.txt'
         self.__arquivo_extrato = f'./armazenamento/{diretorio_cliente}/extrato.txt'
-        self.__arquivo = self.__definir_nome_arquivo(seletor)
-        self.define_diretorio()
+        self.__arquivo = self.__defina_nome_arquivo(seletor)
+        self.defina_diretorio_armazenamento()
 
     @staticmethod
-    def define_diretorio():
+    def defina_diretorio_armazenamento():
         """Realiza criação do diretório de armazenamento.
 
         :return: bool(True | False)
@@ -101,7 +101,7 @@ class Gerenciador(Relatorio):
         except FileExistsError:
             return False
 
-    def __definir_nome_arquivo(self, seletor):
+    def __defina_nome_arquivo(self, seletor):
         """Método para definição do arquivo a ser visualizado ou procurado.
 
         :param seletor: None | str('ext').
@@ -112,21 +112,21 @@ class Gerenciador(Relatorio):
         else:
             return self.__arquivo_conta
 
-    def procurar(self, seletor=None):
+    def procure_arquivo(self, seletor=None):
         """Procura pelo arquivo selecionado pelo método __definir_nome_arquivo().
 
         :param seletor: None | str('ext').
         :return: bool(True | False)
         """
         try:
-            arquivo_conta = open(self.__definir_nome_arquivo(seletor), 'rt')
+            arquivo_conta = open(self.__defina_nome_arquivo(seletor), 'rt')
             arquivo_conta.close()
         except FileNotFoundError:
             return False
         else:
             return True
 
-    def visualizar(self):
+    def mostre_arquivo(self):
         """Exibe no console o conteúdo do arquivo solicitado.
 
         :return: str(conteúdo do arquivo | mensagem de erro)
@@ -138,14 +138,14 @@ class Gerenciador(Relatorio):
         except FileNotFoundError:
             return msg_gerenciador_03
 
-    def escrever_extrato(self, op, valor):
+    def escreva_arquivo_extrato(self, op, valor):
         """Método responsável pela edição do arquivo de extrato.
 
         :param op: str('Operação').
         :param valor: str('000.0')
         :return: str(mensagem)
         """
-        if self.procurar('ext'):
+        if self.procure_arquivo('ext'):
             arquivo_extrato = open(self.__arquivo_extrato, 'at')
             arquivo_extrato.write(f'{super().relatorio_extrato(op, valor)}\n')
             arquivo_extrato.close()
@@ -162,12 +162,12 @@ class Gerenciador(Relatorio):
             arquivo_extrato.close()
         return msg_gerenciador_01
 
-    def escrever_conta(self):
+    def escreva_arquivo_conta(self):
         """Método responsável pela edição do arquivo de dados da conta.
 
         :return: str(mensagem)
         """
-        if self.procurar():
+        if self.procure_arquivo():
             arquivo_cliente = open(self.__arquivo, 'wt+')
             arquivo_cliente.write(f'{super().relatorio_conta()}')
             arquivo_cliente.close()
@@ -182,7 +182,7 @@ class Gerenciador(Relatorio):
             arquivo_cliente.close()
             return msg_gerenciador_01
 
-    def extrair_dados(self):
+    def retire_dados_do_arquivo(self):
         """Método para extração dos dados da conta em arquivo de texto.
 
         :return: dict('nome': str, 'cpf': str, 'endereco': str,

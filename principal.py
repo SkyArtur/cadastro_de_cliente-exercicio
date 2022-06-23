@@ -1,16 +1,16 @@
 import os
 from hashlib import md5
 from sys import exit
-from time import sleep
+from time import sleep as espere
 
 from modulos.gerenciador import Gerenciador
 from modulos.registrador import *
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#                       Limpar Tela
+#                       Limpe a Tela
 # ----------------------------------------------------------------------------------------------------------------------
-def limpar_tela():
+def limpe_a_tela():
     """Função que realiza a limpeza do console em tempo de execução.
 
     :return: command(clear | cls)
@@ -21,124 +21,123 @@ def limpar_tela():
 # ----------------------------------------------------------------------------------------------------------------------
 #                       Encerrar Programa
 # ----------------------------------------------------------------------------------------------------------------------
-def encerrar():
+def encerre_o_programa():
     """Função para encerramento do programa.
 
     :return: function(exit())
     """
     print('Encerrando.......')
-    sleep(1.5)
+    espere(1)
     return exit()
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #                       Cadastrar Cliente
 # ----------------------------------------------------------------------------------------------------------------------
-def cadastrar_cliente():
+def realize_cadastro_do_cliente():
     """Função que processa a opção 'Cadastrar Cliente'
     do menu inicial.
 
     :return: str(mensagem)
     """
-    limpar_tela()
+    limpe_a_tela()
     print(cadastro_do_cliente)
-    cliente = Cliente(Registro().registrar_cliente)
+    cliente = Cliente(Registrador().colete_dados_cliente)
     nome_arquivo = md5(bytes(cliente.cpf, 'utf-8')).hexdigest()
-    if Gerenciador(nome_arquivo).procurar():
-        print(msg_principal_01)
+    if Gerenciador(nome_arquivo).procure_arquivo():
+        print(cliente_ja_cadastrado)
     else:
-        conta = Conta(Registro().registrar_conta)
-        dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
-        Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato('Abertura', f"a+ R${conta.disponivel:.2f}")
-        print(Gerenciador(nome_arquivo, dados_principais).escrever_conta())
-        Gerenciador(nome_arquivo).visualizar()
-        sleep(2)
-        limpar_tela()
+        conta = Conta(Registrador().colete_dados_conta)
+        dados = {**cliente.dados_cliente, **conta.dados_conta}
+        Gerenciador(nome_arquivo, dados, 'ext').escreva_arquivo_extrato('Abertura', f"a+ R${conta.disponivel:.2f}")
+        print(Gerenciador(nome_arquivo, dados).escreva_arquivo_conta())
+        Gerenciador(nome_arquivo).mostre_arquivo()
+        espere(3)
+        limpe_a_tela()
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #                       Operação em Conta
 # ----------------------------------------------------------------------------------------------------------------------
-def operacao_em_conta():
+def realize_operacao_em_conta():
     """Função que processa a opção 'Operação em Conta"
     do menu inicial.
 
     :return: str(mensagem)
     """
-    cliente, conta = 0, 0
-    ref_cliente = ['nome', 'cpf', 'endereco', 'bairro']
-    ref_conta = ['saldo', 'credito']
-    limpar_tela()
+    chaves_cliente = ['nome', 'cpf', 'endereco', 'bairro']
+    chaves_conta = ['saldo', 'credito']
+    limpe_a_tela()
     print(operacoes_em_conta)
     documento = InputPadrao('Digite o CPF: ').conteudo
     nome_arquivo = md5(bytes(Documento(documento).cpf, 'utf-8')).hexdigest()
-    if Documento(documento).checar and Gerenciador(nome_arquivo).procurar():
-        limpar_tela()
-        Gerenciador(nome_arquivo).visualizar()
-        dados_principais = Gerenciador(nome_arquivo).extrair_dados()
-        cliente = Cliente(dict({d for d in dados_principais.items() if d[0] in ref_cliente}))
-        conta = Conta(dict({d for d in dados_principais.items() if d[0] in ref_conta}))
+    if Documento(documento).checar and Gerenciador(nome_arquivo).procure_arquivo():
+        limpe_a_tela()
+        Gerenciador(nome_arquivo).mostre_arquivo()
+        dados = Gerenciador(nome_arquivo).retire_dados_do_arquivo()
+        cliente = Cliente(dict({d for d in dados.__items() if d[0] in chaves_cliente}))
+        conta = Conta(dict({d for d in dados.__items() if d[0] in chaves_conta}))
         while True:
-            op = Menu().menu_operacoes
+            operacao = Menu().menu_operacoes
             # ------------------------------------ Saque ---------------------------------------------------------------
-            if op == 1:
+            if operacao == 1:
                 valor = InputPadrao('Digite o valor: ', float).conteudo
                 if conta.sacar(valor):
-                    dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
-                    Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato("Saque", f"s- R${valor:.2f}")
-                    Gerenciador(nome_arquivo, dados_principais).escrever_conta()
-                    limpar_tela()
+                    dados = {**cliente.dados_cliente, **conta.dados_conta}
+                    Gerenciador(nome_arquivo, dados, 'ext').escreva_arquivo_extrato("Saque", f"s- R${valor:.2f}")
+                    Gerenciador(nome_arquivo, dados).escreva_arquivo_conta()
+                    limpe_a_tela()
                 else:
-                    limpar_tela()
-                    print(msg_principal_03)
-                Gerenciador(nome_arquivo).visualizar()
+                    limpe_a_tela()
+                    print(valor_excedeu_limite)
+                Gerenciador(nome_arquivo).mostre_arquivo()
             # ------------------------------------ Depósito ------------------------------------------------------------
-            elif op == 2:
+            elif operacao == 2:
                 valor = InputPadrao('Digite o valor: ', float).conteudo
                 conta.depositar(valor)
-                dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
-                Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato("Depósito", f"d+ R${valor:.2f}")
-                Gerenciador(nome_arquivo, dados_principais).escrever_conta()
-                limpar_tela()
-                Gerenciador(nome_arquivo).visualizar()
+                dados = {**cliente.dados_cliente, **conta.dados_conta}
+                Gerenciador(nome_arquivo, dados, 'ext').escreva_arquivo_extrato("Depósito", f"d+ R${valor:.2f}")
+                Gerenciador(nome_arquivo, dados).escreva_arquivo_conta()
+                limpe_a_tela()
+                Gerenciador(nome_arquivo).mostre_arquivo()
             # ------------------------------------ Extrato -------------------------------------------------------------
-            elif op == 3:
-                limpar_tela()
-                Gerenciador(nome_arquivo).escrever_extrato("Extrato", "# simples consulta")
-                Gerenciador(nome_arquivo).visualizar()
-                Gerenciador(nome_arquivo, seletor='ext').visualizar()
+            elif operacao == 3:
+                limpe_a_tela()
+                Gerenciador(nome_arquivo).escreva_arquivo_extrato("Extrato", "# simples consulta")
+                Gerenciador(nome_arquivo).mostre_arquivo()
+                Gerenciador(nome_arquivo, seletor='ext').mostre_arquivo()
             # ------------------------------------ Novo Crédito --------------------------------------------------------
-            elif op == 4:
+            elif operacao == 4:
                 valor = InputPadrao('Digite o novo Crédito: ', float).conteudo
                 conta.credito = valor
-                dados_principais = {**cliente.dados_cliente, **conta.dados_conta}
-                Gerenciador(nome_arquivo, dados_principais, 'ext').escrever_extrato('Novo Crédito', f"c+ R${valor:.2f}")
-                Gerenciador(nome_arquivo, dados_principais).escrever_conta()
-                limpar_tela()
-                Gerenciador(nome_arquivo).visualizar()
+                dados = {**cliente.dados_cliente, **conta.dados_conta}
+                Gerenciador(nome_arquivo, dados, 'ext').escreva_arquivo_extrato('Novo Crédito', f"c+ R${valor:.2f}")
+                Gerenciador(nome_arquivo, dados).escreva_arquivo_conta()
+                limpe_a_tela()
+                Gerenciador(nome_arquivo).mostre_arquivo()
             # ------------------------------------ Retornar ------------------------------------------------------------
             else:
-                return limpar_tela()
+                return limpe_a_tela()
     else:
-        limpar_tela()
-        print(msg_principal_02)
+        limpe_a_tela()
+        print(cliente_nao_encontrado)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #                       Execução do Programa
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    limpar_tela()
+    limpe_a_tela()
     print(abertura_do_programa)
     while True:
         print(sistema_de_cadastro_de_clientes)
         opcao = Menu().menu_inicial
         # Cadastrar Cliente
         if opcao == 1:
-            cadastrar_cliente()
+            realize_cadastro_do_cliente()
         # Operações em Conta
         elif opcao == 2:
-            operacao_em_conta()
+            realize_operacao_em_conta()
         # Encerrar Programa
         else:
-            encerrar()
+            encerre_o_programa()

@@ -18,26 +18,23 @@ cadastro_do_cliente = '''------------------------------------------
 operacoes_em_conta = '''------------------------------------------
            Operações em Conta
 ------------------------------------------'''
-msg_principal_01 = '''ErroCadastro ~01:
-    Cliente já cadastrado!
-'''
-msg_principal_02 = '''ErroCadastro ~03:
-    Cliente não encontrado!
-'''
-msg_principal_03 = '''ErroLimite ~01:
-    O valor de saque excede seu limite disponível
-'''
+cliente_ja_cadastrado = '''ErroCadastro ~01:
+    Cliente já cadastrado!'''
+cliente_nao_encontrado = '''ErroCadastro ~03:
+    Cliente não encontrado!'''
+valor_excedeu_limite = '''ErroLimite ~01:
+    O valor de saque excede seu limite disponível'''
 
 # ----------------------------------------------------------------------------------------------------------------------
 #              Mensagens do módulo registrador
 # ----------------------------------------------------------------------------------------------------------------------
-msg_registrador_01 = """ErroDocumento ~01:
-    Número do documento não é válido!
+cpf_invalido = """ErroDocumento ~01:
+    Número do CPF não é válido!
 """
-msg_registrador_02 = """ErroCep ~01:
+cep_invalido = """ErroCep ~01:
     número de CEP inválido!
 """
-msg_registrador_03 = """MensagemCep ~01:
+endereco_encontrado = """MensagemCep ~01:
     Endereço encontrado!
 """
 
@@ -57,32 +54,27 @@ msg_gerenciador_03 = f"""MensagemGerente ~03:
 # ----------------------------------------------------------------------------------------------------------------------
 #              Mensagens do módulo entrada
 # ----------------------------------------------------------------------------------------------------------------------
-msg_entrada_01 = f'''ErroEntrada ~01:
-    São aceitos apenas números inteiros.
-'''
-msg_entrada_02 = f'''ErroEntrada ~02:
+digite_apenas_int = f'''ErroEntrada ~01:
+    São aceitos apenas números inteiros.'''
+digite_apenas_float = f'''ErroEntrada ~02:
     Não são aceitos letras ou caractéres especiais.
     Use o ponto(.) ao invés da vírgula(,) para separar
-    casas decimais.
-'''
-msg_entrada_03 = f'''ErroEntrada ~03:
-    Parece que você digitou algo errado!
-'''
-msg_entrada_04 = f'''InputMenuError ~01:
-    Parece que você digitou uma opção inválida!!
-'''
-msg_entrada_05 = f'''InputCepError ~01:
+    casas decimais.'''
+algo_errado_aconteceu = f'''ErroEntrada ~03:
+    Parece que você digitou algo errado!'''
+opcao_invalida = f'''InputMenuError ~01:
+    Parece que você digitou uma opção inválida!!'''
+entrada_invalida_cep = f'''InputCepError ~01:
     Parece que você digitou algo inválido.
-    Por favor, digite apenas os números.
-'''
-msg_entrada_menu_01 = """Menu Inicial:
+    Por favor, digite apenas os números.'''
+montar_menu_inicial = """Menu Inicial:
     [1] Cadastrar Novo Cliente
     [2] Operações em Conta
     [0] Encerrar"""
-msg_entrada_menu_02 = """Deseja definir os créditos do cliente?
+montar_menu_creditos = """Deseja definir os créditos do cliente?
     [1] Sim
     [2] Não"""
-msg_entrada_menu_03 = """Qual operação deseja realizar?
+montar_menu_operacoes = """Qual operação deseja realizar?
     [1] Sacar
     [2] Depositar
     [3] Consultar extrato

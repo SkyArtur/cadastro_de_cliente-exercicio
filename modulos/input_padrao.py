@@ -85,7 +85,7 @@ class InputPadrao:
                 try:
                     self.__input_do_usuario = int(input(input_usuario))
                 except ValueError:
-                    print(msg_entrada_01)
+                    print(digite_apenas_int)
                 else:
                     return int(self.__input_do_usuario)
         elif tipo_input == float:
@@ -93,7 +93,7 @@ class InputPadrao:
                 try:
                     self.__input_do_usuario = float(input(input_usuario))
                 except ValueError:
-                    print(msg_entrada_02)
+                    print(digite_apenas_float)
                 else:
                     return float(self.__input_do_usuario)
         else:
@@ -101,7 +101,7 @@ class InputPadrao:
                 try:
                     self.__input_do_usuario = input(input_usuario)
                 except ValueError:
-                    print(msg_entrada_03)
+                    print(algo_errado_aconteceu)
                 else:
                     return self.__input_do_usuario
 
@@ -111,7 +111,7 @@ class InputPadrao:
         :return: input_do_usuario -> int
         """
         while self.__input_do_usuario < self.__min or self.__input_do_usuario > self.__max:
-            print(msg_entrada_04)
+            print(opcao_invalida)
             self.__input_do_usuario = self.__meu_input('=> ', int)
         else:
             return int(self.__input_do_usuario)
@@ -122,7 +122,7 @@ class InputPadrao:
         :return: input_do_usuario -> str
         """
         while not len(self.__input_do_usuario) == 5 and not self.__input_do_usuario.isnumeric():
-            print(msg_entrada_05)
+            print(entrada_invalida_cep)
             self.__input_do_usuario = self.__meu_input('=> ')
         else:
             return str(self.__input_do_usuario)
@@ -146,7 +146,7 @@ class Menu:
 
         :return: resposta_do_usuario -> int
         """
-        resposta_do_usuario = InputPadrao(f'{msg_entrada_menu_01}\n=> ', int, 0, 2).menu_input()
+        resposta_do_usuario = InputPadrao(f'{montar_menu_inicial}\n=> ', int, 0, 2).menu_input()
         return resposta_do_usuario
 
     @property
@@ -155,7 +155,7 @@ class Menu:
 
         :return: resposta_usuario -> int
         """
-        resposta_usuario = InputPadrao(f'{msg_entrada_menu_02}\n=> ', int, 1, 2).menu_input()
+        resposta_usuario = InputPadrao(f'{montar_menu_creditos}\n=> ', int, 1, 2).menu_input()
         return resposta_usuario
 
     @property
@@ -164,5 +164,5 @@ class Menu:
 
         :return: resposta_usuario -> int
         """
-        resposta = InputPadrao(f'{msg_entrada_menu_03}\n=> ', int, 0, 4).menu_input()
+        resposta = InputPadrao(f'{montar_menu_operacoes}\n=> ', int, 0, 4).menu_input()
         return resposta
