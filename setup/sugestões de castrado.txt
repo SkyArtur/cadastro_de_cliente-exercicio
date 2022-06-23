@@ -1,0 +1,10 @@
+Exemplos de cadastrados:
+
+
+Elon Musk Ferreira cpf-113.686.618-31 cep-58140-000
+
+Donald Trump da Silva cpf-153.186.269-12 cep-68918-970
+
+Rihanna Benedita da Conceição cpf-564.726.766-15 cep-	68915-970
+
+Lady Gaga de Souza das Oliiveiras cpf-281.958.458-60 cep-49890-970

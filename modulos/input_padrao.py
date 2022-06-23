@@ -146,7 +146,7 @@ class Menu:
 
         :return: resposta_do_usuario -> int
         """
-        resposta_do_usuario = InputPadrao(f'{msg_entrada_menu_01}\n=> ', int, 0, 3).menu_input()
+        resposta_do_usuario = InputPadrao(f'{msg_entrada_menu_01}\n=> ', int, 0, 2).menu_input()
         return resposta_do_usuario
 
     @property

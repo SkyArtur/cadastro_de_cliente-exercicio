@@ -16,21 +16,15 @@ forma2 = '''------------------------------------------
             Cadastro do Cliente
 ------------------------------------------'''
 forma3 = '''------------------------------------------
-         Buscar Dados do Cliente
-------------------------------------------'''
-forma4 = '''------------------------------------------
            Operações em Conta
 ------------------------------------------'''
 msg_principal_01 = '''ErroCadastro ~01:
     Cliente já cadastrado!
 '''
-msg_principal_02 = '''ErroCadastro ~02:
-    Número de CPF inválido!
-'''
-msg_principal_03 = '''ErroCadastro ~03:
+msg_principal_02 = '''ErroCadastro ~03:
     Cliente não encontrado!
 '''
-msg_principal_04 = '''ErroLimite ~01:
+msg_principal_03 = '''ErroLimite ~01:
     O valor de saque excede seu limite disponível
 '''
 
@@ -83,8 +77,7 @@ msg_entrada_05 = f'''InputCepError ~01:
 '''
 msg_entrada_menu_01 = """Menu Inicial:
     [1] Cadastrar Novo Cliente
-    [2] Buscar Dados do Cliente
-    [3] Operações em Conta
+    [2] Operações em Conta
     [0] Encerrar"""
 msg_entrada_menu_02 = """Deseja definir os créditos do cliente?
     [1] Sim

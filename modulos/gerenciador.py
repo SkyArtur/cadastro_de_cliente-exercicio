@@ -1,7 +1,8 @@
-from time import strftime, localtime
-from modulos.mensagens import *
-from re import search, findall
 from os import mkdir
+from re import search, findall
+from time import strftime, localtime
+
+from modulos.mensagens import *
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ class Relatorio:
 
         :return: str(relatório)
         """
-        relatorio = f"{op:^25} | {self.data:^25} | {valor:^25}"
+        relatorio = f"{op:^25} | {self.__data:^25} | {valor:^25}"
         return relatorio
 
 

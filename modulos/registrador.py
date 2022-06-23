@@ -1,4 +1,5 @@
-from pycep_correios import get_address_from_cep, WebService, exceptions
+from pycep_correios import get_address_from_cep, WebService
+
 from modulos.input_padrao import InputPadrao, Menu
 from modulos.mensagens import *
 
@@ -223,7 +224,7 @@ class Conta:
         :param valor: float(0.0)
         :return: bool(True | False)
         """
-        return valor <= self.__disponivel
+        return valor <= self.__saldo + self.__credito
 
     def sacar(self, valor: float):
         """Decrementa valor de entrada em atributo saldo.
