@@ -5,17 +5,17 @@ Módulo que armazena as mensagens impressas pelo programa.
 # ----------------------------------------------------------------------------------------------------------------------
 #              Mensagens do módulo principal
 # ----------------------------------------------------------------------------------------------------------------------
-abertura = '''Exercício prático no aprendizado em Python.
+abertura_do_programa = '''Exercício prático no aprendizado em Python.
 Copyright (c) 2022 - Ponta Grossa/PR. 
 Projeto Cadastro de Cliente.
 Artur dos Santos Shon - EAD - UNINTER - 2021.'''
-forma1 = '''------------------------------------------
+sistema_de_cadastro_de_clientes = '''------------------------------------------
      Sistema de Cadastro de Clientes
 ------------------------------------------'''
-forma2 = '''------------------------------------------
+cadastro_do_cliente = '''------------------------------------------
             Cadastro do Cliente
 ------------------------------------------'''
-forma3 = '''------------------------------------------
+operacoes_em_conta = '''------------------------------------------
            Operações em Conta
 ------------------------------------------'''
 msg_principal_01 = '''ErroCadastro ~01:

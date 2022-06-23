@@ -41,7 +41,7 @@ def cadastrar_cliente():
     :return: str(mensagem)
     """
     limpar_tela()
-    print(forma2)
+    print(cadastro_do_cliente)
     cliente = Cliente(Registro().registrar_cliente)
     nome_arquivo = md5(bytes(cliente.cpf, 'utf-8')).hexdigest()
     if Gerenciador(nome_arquivo).procurar():
@@ -69,7 +69,7 @@ def operacao_em_conta():
     ref_cliente = ['nome', 'cpf', 'endereco', 'bairro']
     ref_conta = ['saldo', 'credito']
     limpar_tela()
-    print(forma3)
+    print(operacoes_em_conta)
     documento = InputPadrao('Digite o CPF: ').conteudo
     nome_arquivo = md5(bytes(Documento(documento).cpf, 'utf-8')).hexdigest()
     if Documento(documento).checar and Gerenciador(nome_arquivo).procurar():
@@ -129,9 +129,9 @@ def operacao_em_conta():
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     limpar_tela()
-    print(abertura)
+    print(abertura_do_programa)
     while True:
-        print(forma1)
+        print(sistema_de_cadastro_de_clientes)
         opcao = Menu().menu_inicial
         # Cadastrar Cliente
         if opcao == 1:

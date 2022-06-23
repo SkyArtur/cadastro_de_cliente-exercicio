@@ -11,7 +11,7 @@ class InputPadrao:
         pode controlar a dimensão numérica dos menus (minn, maxx).
 
         Constructors:
-            - __ini__()
+            - __init__()
 
         Privates:
             - __meu_input()
